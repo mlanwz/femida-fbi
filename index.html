@@ -1,0 +1,2352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http://localhost:* https://*;">
+<title>РУ ФСБ «Кутузовский» ФО — РУ ФСБ по Кутузовскому ФО</title>
+<style>
+  :root{
+    --navy:#0a1628; --navy-2:#0f2038; --navy-3:#152a47; --navy-4:#1b3358;
+    --gold:#c9a227; --gold-2:#e6c458; --line:#1e3557; --line-soft:rgba(30,53,87,.5);
+    --text:#dfe6f0; --muted:#8ea3c0;
+    --red:#e05454; --green:#4ade80; --blue:#6eb3ff; --orange:#f0a050; --violet:#9d6eff;
+    --sidebar-w:270px;
+    --r-sm:6px; --r-md:10px; --r-lg:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--navy);color:var(--text);line-height:1.55;overflow:hidden;-webkit-font-smoothing:antialiased;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  input,select,textarea{font-family:inherit;}
+  ::selection{background:rgba(201,162,39,.35);color:#fff;}
+
+  #boot-error{display:none;position:fixed;inset:0;background:#0a1628;color:#f0a0a0;padding:40px;z-index:99999;overflow:auto;}
+  #boot-error h2{color:#e05454;margin-bottom:16px;}
+  #boot-error pre{background:#061020;padding:20px;border-radius:8px;color:#e6c458;overflow:auto;font-size:12px;}
+
+  #loginScreen{position:fixed;inset:0;z-index:9999;background:
+    radial-gradient(ellipse at 15% 20%,rgba(201,162,39,.10) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(110,179,255,.06) 0%,transparent 55%),
+    linear-gradient(180deg,#0a1628 0%,#061020 100%);
+    display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;}
+  #loginScreen::before{content:"";position:absolute;inset:0;background-image:
+    repeating-linear-gradient(0deg,transparent 0,transparent 60px,rgba(30,53,87,.15) 60px,rgba(30,53,87,.15) 61px),
+    repeating-linear-gradient(90deg,transparent 0,transparent 60px,rgba(30,53,87,.15) 60px,rgba(30,53,87,.15) 61px);
+    pointer-events:none;opacity:.4;}
+  #loginScreen.hidden{display:none;}
+  .login-box{position:relative;width:100%;max-width:470px;background:linear-gradient(160deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-radius:var(--r-lg);padding:44px 40px 34px;box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 60px rgba(201,162,39,.08),inset 0 1px 0 rgba(201,162,39,.15);animation:loginIn .55s cubic-bezier(.2,.8,.3,1) both;margin:auto;overflow:hidden;}
+  .login-box::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 0%,var(--gold) 25%,var(--gold-2) 50%,var(--gold) 75%,transparent 100%);}
+  @keyframes loginIn{from{opacity:0;transform:translateY(24px) scale(.97);}to{opacity:1;transform:none;}}
+  .login-emblem{width:84px;height:98px;display:block;margin:0 auto 22px;filter:drop-shadow(0 0 20px rgba(201,162,39,.55));animation:glow 4.5s ease-in-out infinite;}
+  @keyframes glow{0%,100%{filter:drop-shadow(0 0 14px rgba(201,162,39,.5));}50%{filter:drop-shadow(0 0 28px rgba(230,196,88,.9));}}
+  .login-box h1{font-size:15px;text-align:center;color:#fff;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .login-box .login-sub{text-align:center;font-size:10.5px;color:var(--gold-2);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:28px;}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line) 30%,var(--line) 70%,transparent);margin:0 0 26px;}
+  .login-field{margin-bottom:16px;}
+  .login-field label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600;}
+  .login-field input,.login-field select{width:100%;background:#061020;border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;color:#fff;font-size:13.5px;transition:.25s;}
+  .login-field input:focus,.login-field select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15),0 0 20px rgba(201,162,39,.15);background:#08152a;}
+  .login-btn{width:100%;background:linear-gradient(135deg,var(--gold) 0%,#a5801b 100%);color:var(--navy);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-size:12.5px;padding:14px;border-radius:var(--r-sm);margin-top:10px;transition:.3s;box-shadow:0 6px 22px rgba(201,162,39,.3),inset 0 1px 0 rgba(255,255,255,.2);}
+  .login-btn:hover{background:linear-gradient(135deg,var(--gold-2) 0%,var(--gold) 100%);transform:translateY(-2px);box-shadow:0 10px 30px rgba(230,196,88,.5);}
+  .login-btn.secondary{background:transparent;border:1px solid var(--line);color:#b8c4d6;box-shadow:none;margin-top:12px;font-size:11px;padding:11px;}
+  .login-btn.secondary:hover{background:var(--navy-2);color:var(--gold-2);border-color:var(--gold);transform:none;box-shadow:0 0 18px rgba(201,162,39,.2);}
+  .login-error{display:none;background:rgba(224,84,84,.1);border:1px solid rgba(224,84,84,.4);color:#f0a0a0;font-size:12px;padding:11px 14px;border-radius:var(--r-sm);margin-top:14px;text-align:center;}
+  .login-error.show{display:block;}
+  .login-success{display:none;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.4);color:#a0f0b0;font-size:12px;padding:11px 14px;border-radius:var(--r-sm);margin-top:14px;text-align:center;}
+  .login-success.show{display:block;}
+  .login-foot{text-align:center;font-size:9.5px;color:#5a6b85;letter-spacing:2px;margin-top:26px;text-transform:uppercase;line-height:2;}
+  .login-foot b{color:var(--gold-2);}
+  .back-link{display:block;text-align:center;font-size:11px;color:var(--muted);margin-top:18px;cursor:pointer;letter-spacing:1.5px;text-transform:uppercase;transition:.2s;}
+  .back-link:hover{color:var(--gold-2);}
+
+  #app{display:none;height:100vh;width:100vw;}
+  #app.active{display:flex;}
+  .sidebar{width:var(--sidebar-w);flex:0 0 var(--sidebar-w);background:linear-gradient(180deg,#0f2038 0%,#0a1628 100%);border-right:1px solid var(--line);display:flex;flex-direction:column;height:100vh;overflow-y:auto;box-shadow:4px 0 24px rgba(0,0,0,.3);}
+  .sidebar::-webkit-scrollbar{width:6px;}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px;}
+  .sb-brand{padding:20px 20px 18px;border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:12px;}
+  .sb-brand svg{width:38px;height:44px;flex:0 0 auto;filter:drop-shadow(0 0 8px rgba(201,162,39,.3));}
+  .sb-brand .b-title{font-size:11px;color:#fff;font-weight:700;text-transform:uppercase;letter-spacing:1px;line-height:1.2;}
+  .sb-brand .b-sub{font-size:9px;color:var(--gold-2);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+  .sb-user{padding:16px 18px;border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,rgba(201,162,39,.04) 0%,transparent 100%);}
+  .sb-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold) 0%,#7a5f12 100%);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:14px;flex:0 0 auto;border:2px solid rgba(201,162,39,.35);box-shadow:0 0 16px rgba(201,162,39,.35);letter-spacing:.5px;}
+  .sb-user-info{min-width:0;}
+  .sb-user-info .u-name{font-size:12.5px;color:#fff;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sb-user-info .u-role{font-size:10px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.3px;}
+  .sb-status{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);margin-left:auto;flex:0 0 auto;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+  .sb-nav{flex:1;padding:16px 0;overflow-y:auto;}
+  .sb-group-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#4a5a70;padding:14px 22px 8px;font-weight:700;}
+  .sb-item{display:flex;align-items:center;gap:12px;padding:11px 22px;font-size:13px;color:#b8c4d6;cursor:pointer;border-left:3px solid transparent;transition:.25s;}
+  .sb-item:hover{background:rgba(255,255,255,.03);color:#fff;}
+  .sb-item.active{background:linear-gradient(90deg,rgba(201,162,39,.12) 0%,transparent 100%);color:#fff;border-left-color:var(--gold);}
+  .sb-item.active .sb-icon{color:var(--gold-2);}
+  .sb-icon{width:18px;height:18px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#6a7a90;transition:.2s;}
+  .sb-icon svg{width:16px;height:16px;fill:currentColor;}
+  .sb-badge{margin-left:auto;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;box-shadow:0 0 10px rgba(201,162,39,.5);}
+  .sb-badge.danger{background:var(--red);color:#fff;box-shadow:0 0 10px var(--red);}
+  .sb-foot{padding:14px 18px;border-top:1px solid var(--line-soft);font-size:9.5px;color:#4a5a70;text-align:center;letter-spacing:1.5px;line-height:1.8;}
+  .sb-foot b{color:var(--gold-2);}
+  .logout-btn{width:100%;margin-top:12px;background:rgba(224,84,84,.08);border:1px solid rgba(224,84,84,.25);color:#f0a0a0;padding:9px;border-radius:var(--r-sm);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;transition:.25s;}
+  .logout-btn:hover{background:rgba(224,84,84,.22);color:#fff;border-color:var(--red);}
+
+  .main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;background:
+    radial-gradient(ellipse at 90% 0%,rgba(201,162,39,.05) 0%,transparent 45%),
+    radial-gradient(ellipse at 10% 100%,rgba(110,179,255,.04) 0%,transparent 45%),
+    var(--navy);}
+  .topbar{height:74px;flex:0 0 74px;background:linear-gradient(180deg,#0f2038 0%,#0a1628 100%);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 32px;gap:20px;box-shadow:0 4px 20px rgba(0,0,0,.2);}
+  .tb-title{flex:1;min-width:0;}
+  .tb-title h1{font-size:18px;color:#fff;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:14px;}
+  .tb-title h1::before{content:"";width:4px;height:26px;background:linear-gradient(180deg,var(--gold-2),var(--gold));border-radius:2px;box-shadow:0 0 14px rgba(201,162,39,.7);}
+  .tb-title p{font-size:11.5px;color:var(--muted);margin-top:3px;margin-left:18px;letter-spacing:.4px;}
+  .tb-actions{display:flex;align-items:center;gap:10px;}
+  .tb-btn{width:42px;height:42px;border-radius:var(--r-sm);background:rgba(255,255,255,.025);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:.25s;position:relative;}
+  .tb-btn:hover{background:var(--navy-3);color:var(--gold-2);border-color:var(--gold);box-shadow:0 0 16px rgba(201,162,39,.25);}
+  .tb-btn svg{width:18px;height:18px;fill:currentColor;}
+  .tb-btn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);}
+  .tb-clock{font-size:12px;color:var(--muted);padding:0 16px;border-left:1px solid var(--line);margin-left:6px;font-variant-numeric:tabular-nums;letter-spacing:.5px;white-space:nowrap;text-align:right;}
+  .tb-clock b{color:var(--gold-2);font-weight:600;font-size:14.5px;display:block;}
+  .tb-clock small{display:block;font-size:9px;color:#5a6b85;letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+
+  .content{flex:1;overflow-y:auto;padding:30px 32px 50px;}
+  .content::-webkit-scrollbar{width:10px;}
+  .content::-webkit-scrollbar-thumb{background:var(--navy-3);border-radius:5px;}
+  .page{display:none;animation:pageIn .4s cubic-bezier(.2,.8,.3,1);}
+  .page.active{display:block;}
+  @keyframes pageIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+  .filter-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:30px;}
+  .f-tile{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-radius:var(--r-md);padding:20px 20px 18px;cursor:pointer;transition:.3s cubic-bezier(.2,.8,.3,1);position:relative;overflow:hidden;}
+  .f-tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--gold-2),var(--gold));box-shadow:0 0 16px var(--gold);}
+  .f-tile::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,39,.1) 0%,transparent 70%);transition:.4s;}
+  .f-tile:hover{background:linear-gradient(150deg,#152a47 0%,#0f2038 100%);transform:translateY(-4px);border-color:rgba(201,162,39,.4);box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 0 1px rgba(201,162,39,.15);}
+  .f-tile .f-num{font-size:30px;font-weight:700;color:var(--gold-2);font-variant-numeric:tabular-nums;line-height:1;position:relative;z-index:1;letter-spacing:-.5px;}
+  .f-tile .f-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;position:relative;z-index:1;font-weight:600;}
+  .f-tile .f-sub{font-size:10px;color:#5a6b85;margin-top:3px;position:relative;z-index:1;}
+
+  .sec-title{font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-2);font-weight:700;margin:0 0 20px;display:flex;align-items:center;gap:14px;}
+  .sec-title::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);}
+  .sec-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);}
+
+  .staff-grid{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:38px;justify-content:flex-start;}
+  .person{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-radius:var(--r-md);padding:20px;width:400px;display:flex;gap:18px;transition:.35s cubic-bezier(.2,.8,.3,1);cursor:pointer;position:relative;overflow:hidden;}
+  .person::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-2) 50%,var(--gold) 100%);opacity:.7;transition:.3s;}
+  .person:hover{background:linear-gradient(150deg,#152a47 0%,#0f2038 100%);transform:translateY(-5px);border-color:rgba(201,162,39,.3);box-shadow:0 18px 40px rgba(0,0,0,.55),0 0 0 1px rgba(201,162,39,.2),0 0 30px rgba(201,162,39,.1);}
+  .person:hover::before{opacity:1;box-shadow:0 0 16px rgba(201,162,39,.6);}
+  .person.vacant{cursor:default;opacity:.65;}
+  .person.vacant::before{background:var(--line);opacity:.5;}
+  .person.vacant:hover{transform:none;box-shadow:none;border-color:var(--line);background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);}
+  .person .p-photo{width:84px;height:106px;flex:0 0 auto;background:#061020;border:1px solid var(--line);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:.35s;}
+  .person:hover .p-photo{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 20px rgba(201,162,39,.25);}
+  .person.vacant:hover .p-photo{border-color:var(--line);box-shadow:none;}
+  .person .p-photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+  .person:hover .p-photo img{transform:scale(1.06);}
+  .person .p-photo .pinit{font-size:26px;font-weight:700;color:#2a4a7a;letter-spacing:1px;}
+  .person .p-photo .pvac{font-size:32px;color:#2a3a55;font-weight:700;}
+  .person .p-info{flex:1;min-width:0;position:relative;z-index:1;display:flex;flex-direction:column;gap:6px;}
+  .person .p-name{font-size:13.5px;color:#fff;font-weight:600;line-height:1.35;transition:color .3s;}
+  .person:hover .p-name{color:var(--gold-2);}
+  .person.vacant .p-name{color:var(--muted);}
+  .person .p-rank{display:inline-block;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--navy);background:linear-gradient(135deg,var(--gold-2),var(--gold));padding:3px 9px;border-radius:3px;font-weight:700;align-self:flex-start;box-shadow:0 2px 8px rgba(201,162,39,.3);}
+  .person.vacant .p-rank{background:var(--navy-3);color:var(--muted);border:1px solid var(--line);box-shadow:none;}
+  .person .p-post{font-size:11.5px;color:#b8c4d6;line-height:1.5;}
+  .person.head-person{border-color:rgba(201,162,39,.25);}
+  .person.head-person::before{opacity:1;}
+  .person.head-person .p-name{font-size:14px;}
+
+  .table-wrap{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-bottom:30px;box-shadow:0 4px 20px rgba(0,0,0,.2);}
+  table.dossier{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table.dossier thead{background:linear-gradient(180deg,#152a47 0%,#0f2038 100%);border-bottom:2px solid var(--gold);}
+  table.dossier th{padding:16px 18px;text-align:left;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold-2);font-weight:700;white-space:nowrap;}
+  table.dossier tbody tr{border-bottom:1px solid var(--line-soft);cursor:pointer;transition:.2s;}
+  table.dossier tbody tr:last-child{border-bottom:none;}
+  table.dossier tbody tr:hover{background:linear-gradient(90deg,rgba(201,162,39,.06) 0%,transparent 100%);}
+  table.dossier td{padding:13px 18px;color:#c6d2e4;vertical-align:middle;}
+  table.dossier td.name{color:#fff;font-weight:600;}
+  table.dossier td.rank-cell{color:var(--gold-2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
+  table.dossier td.days{color:var(--green);font-weight:700;font-variant-numeric:tabular-nums;font-family:Consolas,monospace;}
+  table.dossier td.days .days-sub{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:3px;}
+  .status-pill{display:inline-block;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:10px;font-weight:700;}
+  .status-pill.active{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.3);}
+  .status-pill.fired{background:rgba(224,84,84,.12);color:#f0a0a0;border:1px solid rgba(224,84,84,.3);}
+  .status-pill.warn{background:rgba(240,160,80,.12);color:var(--orange);border:1px solid rgba(240,160,80,.3);}
+  .online-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#5a6b85;margin-right:7px;vertical-align:middle;}
+  .online-dot.on{background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite;}
+
+  .pool-block{background:linear-gradient(150deg,#152a47 0%,#0f2038 100%);border:1px solid rgba(201,162,39,.35);border-radius:var(--r-md);padding:28px 30px;margin-bottom:24px;box-shadow:0 8px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(201,162,39,.2);}
+  .pool-block h3{font-size:16px;color:#fff;margin-bottom:10px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:10px;}
+  .pool-block h3::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);}
+  .pool-block .pool-sub{font-size:12.5px;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+  .pool-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:22px;}
+  .pool-stat{background:rgba(6,16,32,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 20px;}
+  .pool-stat .ps-label{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600;}
+  .pool-stat .ps-value{font-size:23px;color:#fff;font-weight:700;font-family:Consolas,monospace;letter-spacing:-.3px;}
+  .pool-stat .ps-value.gold{color:var(--gold-2);}
+  .pool-stat .ps-value.green{color:var(--green);}
+  .pool-stat .ps-value.red{color:#f0a0a0;}
+
+  .premium-log{background:rgba(6,16,32,.4);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-sm);padding:14px 18px;margin-bottom:10px;display:flex;gap:16px;align-items:center;transition:.2s;}
+  .premium-log:hover{background:rgba(6,16,32,.7);border-left-color:var(--gold-2);}
+  .premium-log .pl-date{font-family:Consolas,monospace;font-size:11px;color:var(--muted);flex:0 0 auto;min-width:145px;}
+  .premium-log .pl-text{flex:1;font-size:12.5px;color:#c6d2e4;line-height:1.5;}
+  .premium-log .pl-text b{color:var(--gold-2);font-weight:600;}
+  .premium-log .pl-amount{font-family:Consolas,monospace;font-size:14.5px;font-weight:700;color:var(--gold-2);letter-spacing:-.3px;}
+
+  .overlay{position:fixed;inset:0;background:rgba(3,8,18,.9);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:1000;overflow-y:auto;}
+  .overlay.active{opacity:1;pointer-events:auto;}
+  .modal{background:linear-gradient(160deg,#152a47 0%,#0f2038 100%);border:1px solid rgba(201,162,39,.35);border-radius:var(--r-lg);max-width:660px;width:100%;padding:36px;position:relative;transform:scale(.92);transition:transform .35s cubic-bezier(.2,.8,.3,1);box-shadow:0 40px 100px rgba(0,0,0,.8),0 0 80px rgba(201,162,39,.12);margin:auto;max-height:90vh;overflow-y:auto;}
+  .modal::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r-lg) var(--r-lg) 0 0;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold-2) 50%,var(--gold) 70%,transparent);}
+  .overlay.active .modal{transform:scale(1);}
+  .modal.wide{max-width:960px;}
+  .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;transition:.3s;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;line-height:1;}
+  .modal-close:hover{color:var(--gold);background:rgba(201,162,39,.1);transform:rotate(90deg);}
+  .modal-head{display:flex;gap:24px;padding-bottom:24px;border-bottom:1px solid var(--line-soft);margin-bottom:24px;}
+  .modal-head .m-photo{width:120px;height:150px;flex:0 0 auto;background:#061020;border:1px solid var(--line);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .modal-head .m-photo img{width:100%;height:100%;object-fit:cover;}
+  .modal-head .m-photo .pinit{font-size:34px;font-weight:700;color:#2a4a7a;letter-spacing:1px;}
+  .modal-head .m-info{flex:1;min-width:0;}
+  .modal-head h3{font-size:20px;color:#fff;margin-bottom:10px;font-weight:700;letter-spacing:.2px;}
+  .modal-head .m-rank{display:inline-block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:linear-gradient(135deg,var(--gold-2),var(--gold));padding:4px 12px;border-radius:3px;font-weight:700;margin-bottom:12px;box-shadow:0 3px 12px rgba(201,162,39,.35);}
+  .modal-head .m-post{font-size:13px;color:#c6d2e4;line-height:1.6;}
+
+  .m-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:26px;}
+  .m-meta-item{background:rgba(6,16,32,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;}
+  .m-meta-item .mm-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600;}
+  .m-meta-item .mm-value{font-size:14px;color:#fff;font-weight:600;font-family:Consolas,monospace;letter-spacing:-.2px;}
+  .m-meta-item .mm-value.gold{color:var(--gold-2);}
+  .m-meta-item .mm-value.green{color:var(--green);}
+  .m-meta-item .mm-value.red{color:#f0a0a0;}
+
+  .m-section-title{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-2);font-weight:700;margin:24px 0 14px;display:flex;align-items:center;gap:12px;}
+  .m-section-title::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);}
+  .m-section-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);}
+
+  .action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;}
+  .action-btn{background:rgba(6,16,32,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;text-align:left;transition:.3s cubic-bezier(.2,.8,.3,1);cursor:pointer;}
+  .action-btn:hover{transform:translateY(-3px);background:var(--navy-3);}
+  .action-btn .ab-icon{font-size:20px;margin-bottom:8px;display:block;}
+  .action-btn .ab-title{font-size:13px;color:#fff;font-weight:700;margin-bottom:4px;}
+  .action-btn .ab-sub{font-size:10.5px;color:var(--muted);}
+  .action-btn.warn{border-color:rgba(240,160,80,.35);} .action-btn.warn:hover{border-color:var(--orange);box-shadow:0 0 22px rgba(240,160,80,.3);} .action-btn.warn .ab-title{color:var(--orange);}
+  .action-btn.danger{border-color:rgba(224,84,84,.35);} .action-btn.danger:hover{border-color:var(--red);box-shadow:0 0 22px rgba(224,84,84,.3);} .action-btn.danger .ab-title{color:#f0a0a0;}
+  .action-btn.gold{border-color:rgba(201,162,39,.35);} .action-btn.gold:hover{border-color:var(--gold);box-shadow:0 0 22px rgba(201,162,39,.3);} .action-btn.gold .ab-title{color:var(--gold-2);}
+  .action-btn.blue{border-color:rgba(110,179,255,.35);} .action-btn.blue:hover{border-color:var(--blue);box-shadow:0 0 22px rgba(110,179,255,.3);} .action-btn.blue .ab-title{color:var(--blue);}
+  .action-btn.green{border-color:rgba(74,222,128,.35);} .action-btn.green:hover{border-color:var(--green);box-shadow:0 0 22px rgba(74,222,128,.3);} .action-btn.green .ab-title{color:var(--green);}
+  .action-btn.violet{border-color:rgba(157,110,255,.35);} .action-btn.violet:hover{border-color:var(--violet);box-shadow:0 0 22px rgba(157,110,255,.3);} .action-btn.violet .ab-title{color:var(--violet);}
+  .action-btn:disabled{opacity:.35;cursor:not-allowed;} .action-btn:disabled:hover{transform:none;background:rgba(6,16,32,.5);box-shadow:none;}
+
+  .ranks-list{display:flex;flex-direction:column;gap:8px;max-height:480px;overflow-y:auto;padding-right:8px;}
+  .rank-item{background:rgba(6,16,32,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:.25s;}
+  .rank-item:hover{background:var(--navy-3);border-color:var(--gold);transform:translateX(4px);box-shadow:-4px 0 0 var(--gold);}
+  .rank-item.current{border-color:var(--gold);background:rgba(201,162,39,.08);cursor:default;}
+  .rank-item .ri-pos{font-family:Consolas,monospace;font-size:11px;color:var(--muted);width:28px;text-align:center;}
+  .rank-item .ri-name{flex:1;font-size:13px;color:#fff;font-weight:600;}
+  .rank-item .ri-badge{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:10px;font-weight:700;}
+  .rank-item .ri-badge.up{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.3);}
+  .rank-item .ri-badge.down{background:rgba(224,84,84,.12);color:#f0a0a0;border:1px solid rgba(224,84,84,.3);}
+  .rank-item .ri-badge.cur{background:rgba(201,162,39,.12);color:var(--gold-2);border:1px solid rgba(201,162,39,.3);}
+
+  .pos-group{margin-bottom:18px;}
+  .pos-group-title{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-2);font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line-soft);}
+  .pos-item{background:rgba(6,16,32,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 16px;font-size:12.5px;color:#fff;cursor:pointer;margin-bottom:8px;transition:.25s;}
+  .pos-item:hover{background:var(--navy-3);border-color:var(--gold);transform:translateX(4px);box-shadow:-4px 0 0 var(--gold);}
+  .pos-item .pos-min{font-size:9.5px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;}
+  .pos-item.occupied{opacity:.5;cursor:not-allowed;}
+  .pos-item.occupied:hover{transform:none;border-color:var(--line);box-shadow:none;background:rgba(6,16,32,.5);}
+
+  .admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;border-bottom:1px solid var(--line-soft);padding-bottom:14px;}
+  .admin-tab{background:rgba(15,32,56,.6);border:1px solid var(--line);color:#b8c4d6;padding:10px 18px;border-radius:var(--r-sm);font-size:12px;transition:.25s;cursor:pointer;}
+  .admin-tab:hover{background:var(--navy-3);color:#fff;border-color:rgba(201,162,39,.4);}
+  .admin-tab.active{background:linear-gradient(135deg,var(--gold) 0%,#b8921f 100%);color:var(--navy);border-color:var(--gold);font-weight:700;box-shadow:0 4px 16px rgba(201,162,39,.35);}
+  .admin-panel{display:none;}
+  .admin-panel.active{display:block;animation:pageIn .3s ease;}
+  .admin-field{margin-bottom:16px;}
+  .admin-field label{display:block;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-weight:600;}
+  .admin-field input,.admin-field select,.admin-field textarea{width:100%;background:#061020;border:1px solid var(--line);border-radius:var(--r-sm);padding:11px 14px;color:#fff;font-size:13px;transition:.25s;}
+  .admin-field input:focus,.admin-field select:focus,.admin-field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15);}
+  .admin-btn{background:linear-gradient(135deg,var(--gold) 0%,#b8921f 100%);color:var(--navy);font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;padding:12px 22px;border-radius:var(--r-sm);transition:.3s;box-shadow:0 6px 20px rgba(201,162,39,.25);}
+  .admin-btn:hover{background:linear-gradient(135deg,var(--gold-2) 0%,var(--gold) 100%);transform:translateY(-2px);box-shadow:0 10px 28px rgba(230,196,88,.5);}
+  .admin-btn.red{background:linear-gradient(135deg,#c04444 0%,#8a2828 100%);color:#fff;}
+  .admin-btn.green{background:linear-gradient(135deg,#2e8a4a 0%,#1a5a2e 100%);color:#fff;}
+
+  .log-item{background:rgba(6,16,32,.4);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-sm);padding:14px 18px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
+  .log-item .li-time{font-family:Consolas,monospace;font-size:11px;color:var(--muted);flex:0 0 auto;min-width:150px;}
+  .log-item .li-text{flex:1;font-size:12.5px;color:#c6d2e4;line-height:1.5;}
+  .log-item.warn{border-left-color:var(--orange);}
+  .log-item.danger{border-left-color:var(--red);}
+  .log-item.info{border-left-color:var(--blue);}
+
+  .empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px;}
+
+  .request-card{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:var(--r-md);padding:22px 26px;margin-bottom:16px;display:flex;gap:22px;align-items:flex-start;}
+  .request-card .r-info{flex:1;}
+  .request-card .r-name{font-size:16px;color:#fff;font-weight:700;margin-bottom:8px;}
+  .request-card .r-rank{display:inline-block;font-size:10px;text-transform:uppercase;color:var(--navy);background:linear-gradient(135deg,var(--gold-2),var(--gold));padding:3px 10px;border-radius:3px;font-weight:700;margin-bottom:10px;}
+  .request-card .r-meta{font-size:11.5px;color:var(--muted);line-height:1.7;}
+  .request-card .r-actions{display:flex;flex-direction:column;gap:10px;}
+  .request-card .r-actions button{padding:10px 18px;border-radius:var(--r-sm);font-size:11px;text-transform:uppercase;font-weight:700;min-width:130px;}
+  .request-card .r-actions .approve{background:linear-gradient(135deg,#2e8a4a 0%,#1a5a2e 100%);color:#fff;}
+  .request-card .r-actions .reject{background:rgba(224,84,84,.1);border:1px solid rgba(224,84,84,.35);color:#f0a0a0;}
+  .request-card .r-screenshot{margin-top:14px;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--line);}
+  .request-card .r-screenshot img{display:block;max-width:240px;max-height:180px;cursor:pointer;}
+
+  .edit-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .edit-form .full{grid-column:1 / -1;}
+
+  .contact-card{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-md);padding:24px 26px;transition:.35s;}
+  .contact-card:hover{background:linear-gradient(150deg,#152a47 0%,#0f2038 100%);transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.5);}
+  .contact-card .c-icon{width:50px;height:50px;border-radius:var(--r-sm);background:linear-gradient(135deg,#152a47 0%,#0f2038 100%);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .contact-card .c-icon svg{width:24px;height:24px;fill:var(--gold);}
+  .contact-card .c-badge{display:inline-block;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:3px;background:rgba(201,162,39,.12);color:var(--gold-2);border:1px solid rgba(201,162,39,.3);margin-bottom:12px;}
+  .contact-card .c-title{font-size:16.5px;color:#fff;font-weight:700;margin-bottom:10px;}
+  .contact-card .c-sub{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:16px;}
+  .contact-card .c-val{font-family:Consolas,monospace;font-size:13px;color:var(--gold-2);font-weight:600;padding:12px 16px;background:rgba(201,162,39,.05);border:1px solid rgba(201,162,39,.2);border-radius:var(--r-sm);word-break:break-word;}
+  .contact-card.link{cursor:pointer;}
+  .contacts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px;}
+
+  .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:14px;}
+  .cal-title{font-size:21px;color:#fff;font-weight:700;}
+  .cal-nav{display:flex;gap:10px;}
+  .cal-nav button{background:rgba(15,32,56,.6);border:1px solid var(--line);color:#b8c4d6;padding:9px 18px;border-radius:var(--r-sm);font-size:12px;}
+  .cal-nav button:hover{background:var(--navy-3);color:#fff;border-color:var(--gold);}
+  .cal-nav button.primary{background:linear-gradient(135deg,var(--gold) 0%,#b8921f 100%);color:var(--navy);border-color:var(--gold);font-weight:700;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;background:rgba(15,32,56,.4);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;}
+  .cal-dow{text-align:center;font-size:11px;text-transform:uppercase;color:var(--muted);padding:10px 0;font-weight:600;}
+  .cal-cell{background:rgba(6,16,32,.6);border:1px solid var(--line);border-radius:var(--r-sm);min-height:100px;padding:10px;font-size:12px;color:#b8c4d6;cursor:pointer;display:flex;flex-direction:column;gap:5px;}
+  .cal-cell:hover{background:var(--navy-3);border-color:var(--gold);}
+  .cal-cell.out{opacity:.3;}
+  .cal-cell.today{border-color:var(--gold);background:rgba(201,162,39,.08);}
+  .cal-cell .cc-day{font-weight:700;color:#fff;font-size:13.5px;}
+  .cal-cell .cc-ev{font-size:10px;background:rgba(201,162,39,.15);color:var(--gold-2);padding:3px 7px;border-radius:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  .ins-card{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-md);padding:20px 24px;margin-bottom:16px;}
+
+  .news-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .news-tb-btn{background:rgba(6,16,32,.5);border:1px solid var(--line);color:#c6d2e4;width:36px;height:36px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;transition:.2s;cursor:pointer;}
+  .news-tb-btn:hover{background:var(--navy-3);border-color:var(--gold);color:var(--gold-2);}
+  .news-tb-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+  .news-editor{background:#061020;border:1px solid var(--line);border-radius:var(--r-sm);min-height:140px;padding:14px 16px;color:#fff;font-size:13.5px;line-height:1.7;outline:none;overflow-y:auto;max-height:400px;}
+  .news-editor:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15);}
+  .news-editor:empty:before{content:"Введите текст новости…";color:#4a5a70;}
+  .news-editor img{max-width:100%;border-radius:var(--r-sm);margin:8px 0;}
+
+  .news-item{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:var(--r-md);padding:22px 26px;margin-bottom:18px;transition:.3s;position:relative;}
+  .news-item:hover{background:linear-gradient(150deg,#152a47 0%,#0f2038 100%);box-shadow:0 10px 30px rgba(0,0,0,.4);}
+  .news-item.unread{border-left-color:var(--gold);box-shadow:0 0 26px rgba(201,162,39,.18);}
+  .news-item.pinned{border-left-color:var(--violet);}
+  .news-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px;}
+  .news-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold) 0%,#7a5f12 100%);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:15px;flex:0 0 auto;border:2px solid rgba(201,162,39,.35);}
+  .news-meta{flex:1;min-width:0;}
+  .news-meta .nm-name{font-size:13.5px;color:#fff;font-weight:600;}
+  .news-meta .nm-rank{font-size:10.5px;color:var(--gold-2);letter-spacing:.5px;margin-top:2px;}
+  .news-meta .nm-time{font-size:10.5px;color:var(--muted);margin-top:3px;}
+  .news-unread-dot{width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);flex:0 0 auto;margin-top:8px;}
+  .news-title{font-size:16px;color:#fff;font-weight:700;margin-bottom:10px;letter-spacing:.2px;}
+  .news-content{font-size:13.5px;color:#c6d2e4;line-height:1.75;word-wrap:break-word;}
+  .news-content img{max-width:100%;border-radius:var(--r-sm);margin:10px 0;display:block;}
+  .news-actions{display:flex;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft);}
+  .news-actions button{padding:6px 14px;border-radius:var(--r-sm);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700;transition:.2s;}
+  .news-actions .pin{background:rgba(157,110,255,.12);border:1px solid rgba(157,110,255,.3);color:var(--violet);}
+  .news-actions .del{background:rgba(224,84,84,.1);border:1px solid rgba(224,84,84,.3);color:#f0a0a0;}
+
+  .law-toolbar{display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+  .law-toolbar input{flex:1;min-width:220px;background:#061020;border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;color:#fff;font-size:13.5px;}
+  .law-toolbar input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15);}
+  .law-toolbar select{background:#061020;border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;color:#fff;font-size:13.5px;cursor:pointer;}
+  .law-toolbar select:focus{outline:none;border-color:var(--gold);}
+  .law-table{background:linear-gradient(150deg,#0f2038 0%,#0a1628 100%);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.2);}
+  .law-table table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .law-table thead{background:linear-gradient(180deg,#152a47 0%,#0f2038 100%);border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:1;}
+  .law-table th{padding:16px 18px;text-align:left;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold-2);font-weight:700;white-space:nowrap;}
+  .law-table tbody tr{border-bottom:1px solid var(--line-soft);transition:.15s;}
+  .law-table tbody tr:last-child{border-bottom:none;}
+  .law-table tbody tr:hover{background:linear-gradient(90deg,rgba(201,162,39,.06) 0%,transparent 100%);}
+  .law-table td{padding:14px 18px;color:#c6d2e4;vertical-align:top;}
+  .law-table td.art{color:var(--gold-2);font-weight:700;font-family:Consolas,monospace;font-size:13px;width:90px;white-space:nowrap;}
+  .law-table td.title{color:#fff;font-weight:600;width:30%;}
+  .law-table td.punish{color:#f0a0a0;font-size:12px;line-height:1.6;}
+  .law-table tr.grp td{background:rgba(201,162,39,.08);color:var(--gold-2);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:10px 18px;}
+
+  #syncStatus{position:fixed;bottom:12px;right:12px;background:rgba(6,16,32,.9);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);z-index:9998;display:flex;align-items:center;gap:8px;pointer-events:none;}
+  #syncStatus .sd{width:8px;height:8px;border-radius:50%;background:#5a6b85;}
+  #syncStatus.online .sd{background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;}
+  #syncStatus.offline .sd{background:var(--orange);box-shadow:0 0 8px var(--orange);}
+  #syncStatus.error .sd{background:var(--red);box-shadow:0 0 8px var(--red);}
+
+  @media (max-width:900px){
+    :root{--sidebar-w:76px;}
+    .sidebar .b-text,.sidebar .sb-user-info,.sidebar .sb-item span:not(.sb-badge),.sidebar .sb-group-label,.sb-foot{display:none;}
+    .sb-brand{justify-content:center;padding:16px 8px;}
+    .sb-user{justify-content:center;padding:12px 8px;}
+    .sb-status{position:absolute;top:8px;right:14px;}
+    .sb-item{justify-content:center;padding:12px 0;}
+    .table-wrap{overflow-x:auto;}
+    table.dossier{min-width:1000px;}
+    .modal-head{flex-direction:column;align-items:center;text-align:center;}
+    .edit-form{grid-template-columns:1fr;}
+    .law-table td.title{width:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div id="boot-error">
+  <h2>⚠ Ошибка загрузки системы</h2>
+  <p style="margin-bottom:16px;color:#b8c4d6;">Скопируйте текст и пришлите разработчику:</p>
+  <pre id="boot-error-text"></pre>
+</div>
+
+<div id="syncStatus"><span class="sd"></span><span id="syncStatusText">Локальный режим</span></div>
+
+<div id="loginScreen">
+  <div class="login-box" id="loginBox">
+    <svg class="login-emblem" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 2 L96 18 V62 C96 92 74 110 50 118 C26 110 4 92 4 62 V18 Z" fill="#0f2038" stroke="#c9a227" stroke-width="3"/>
+      <path d="M50 12 L88 25 V62 C88 86 70 101 50 108 C30 101 12 86 12 62 V25 Z" fill="none" stroke="#c9a227" stroke-width="1.2" opacity=".7"/>
+      <rect x="47" y="30" width="6" height="55" fill="#c9a227"/>
+      <polygon points="50,22 44,32 56,32" fill="#e6c458"/>
+      <polygon points="50,42 53,50 62,50 55,55 58,63 50,58 42,63 45,55 38,50 47,50" fill="#e6c458"/>
+    </svg>
+    <h1>Федеральная служба безопасности<br>Кутузовского федерального округа</h1>
+    <div class="login-sub">РУ ФСБ «Кутузовский» ФО • Служебный доступ</div>
+    <div class="divider"></div>
+    <div class="login-field"><label>Имя и фамилия</label><input type="text" id="inpLogin" placeholder="Например: Иван Петров" autocomplete="off"></div>
+    <div class="login-field"><label>Пароль</label><input type="password" id="inpPass" placeholder="Введите пароль" autocomplete="off"></div>
+    <button class="login-btn" id="btnLogin">Войти в систему</button>
+    <button class="login-btn secondary" id="btnRegisterOpen">Подать заявку на службу</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-foot"><b>РП ПРОЕКТ RMRP КУТУЗОВСКИЙ</b><br>ВСЕ СОВПАДЕНИЯ СЛУЧАЙНЫ • КАРТИНКИ СГЕНЕРИРОВАНЫ ИИ</div>
+  </div>
+
+  <div class="login-box" id="registerBox" style="display:none;">
+    <svg class="login-emblem" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 2 L96 18 V62 C96 92 74 110 50 118 C26 110 4 92 4 62 V18 Z" fill="#0f2038" stroke="#c9a227" stroke-width="3"/>
+      <rect x="47" y="30" width="6" height="55" fill="#c9a227"/>
+      <polygon points="50,22 44,32 56,32" fill="#e6c458"/>
+    </svg>
+    <h1>Заявка на службу</h1>
+    <div class="login-sub">Регистрация в РУ ФСБ «Кутузовский» ФО</div>
+    <div class="divider"></div>
+    <div class="login-field"><label>Имя</label><input type="text" id="regFirst" placeholder="Иван"></div>
+    <div class="login-field"><label>Фамилия</label><input type="text" id="regLast" placeholder="Петров"></div>
+    <div class="login-field"><label>Желаемое звание</label><select id="regRank"></select></div>
+    <div class="login-field"><label>Пароль</label><input type="password" id="regPass" placeholder="Минимум 4 символа"></div>
+    <div class="login-field"><label>Скрин удостоверения с боди-камерой</label><input type="file" id="regScreenshot" accept="image/*" style="padding:10px;"></div>
+    <button class="login-btn" id="btnRegister">Отправить заявку</button>
+    <div class="login-error" id="registerError"></div>
+    <div class="login-success" id="registerSuccess"></div>
+    <span class="back-link" id="btnRegisterBack">← Назад к входу</span>
+  </div>
+</div>
+
+<div id="app">
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 2 L96 18 V62 C96 92 74 110 50 118 C26 110 4 92 4 62 V18 Z" fill="#0f2038" stroke="#c9a227" stroke-width="3"/>
+        <rect x="47" y="30" width="6" height="55" fill="#c9a227"/>
+        <polygon points="50,22 44,32 56,32" fill="#e6c458"/>
+      </svg>
+      <div class="b-text"><div class="b-title">РУ ФСБ «Кутузовский» ФО</div><div class="b-sub">РУ ФСБ по КФО</div></div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">—</div>
+      <div class="sb-user-info"><div class="u-name" id="sbName">—</div><div class="u-role" id="sbRole">—</div></div>
+      <div class="sb-status"></div>
+    </div>
+    <nav class="sb-nav" id="sbNav">
+      <div class="sb-group-label">Работа</div>
+      <div class="sb-item active" data-page="home"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></span><span>Мой кабинет</span></div>
+      <div class="sb-item" data-page="news"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></span><span>Оповещения</span><span class="sb-badge danger" id="newsBadge" style="display:none;">0</span></div>
+      <div class="sb-item" data-page="calendar"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg></span><span>Календарь</span></div>
+      <div class="sb-item" data-page="checks"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span><span>Инспекции</span></div>
+      <div class="sb-group-label">Кадры</div>
+      <div class="sb-item" data-page="dossier"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg></span><span>Личные дела</span></div>
+      <div class="sb-item" data-page="premiums"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.39 7.36H22l-6.18 4.5L18.21 22 12 17.27 5.79 22l2.39-8.14L2 9.36h7.61z"/></svg></span><span>Премирование</span></div>
+      <div class="sb-item" data-page="leadership"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span><span>Руководство</span></div>
+      <div class="sb-item" data-page="structure"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></span><span>Структура</span></div>
+      <div class="sb-group-label">Полезное</div>
+      <div class="sb-item" data-page="law"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M12 2L1 6v2h22V6L12 2zM4 10v8H2v2h20v-2h-2v-8h-2v8h-3v-8h-2v8H9v-8H7v8H4v-8z"/></svg></span><span>УК РФ</span></div>
+      <div class="sb-group-label">Управление</div>
+      <div class="sb-item" data-page="requests" id="navRequests" style="display:none;"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></span><span>Заявки</span><span class="sb-badge danger" id="reqBadge" style="display:none;">0</span></div>
+      <div class="sb-item" data-page="admin" id="navAdmin" style="display:none;"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></span><span>Панель управления</span></div>
+      <div class="sb-group-label">Система</div>
+      <div class="sb-item" data-page="analytics"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg></span><span>Аналитика</span></div>
+      <div class="sb-item" data-page="contacts"><span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span><span>Контакты</span></div>
+    </nav>
+    <div class="sb-foot"><b>RMRP • КУТУЗОВСКИЙ</b><br>ВСЕ СОВПАДЕНИЯ СЛУЧАЙНЫ<button class="logout-btn" id="btnLogout">Выйти</button></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="tb-title"><h1 id="pageTitle">Мой кабинет</h1><p id="pageSub">Сводка по управлению</p></div>
+      <div class="tb-actions">
+        <button class="tb-btn" title="Оповещения" id="tbNewsBtn"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span class="dot" id="tbNewsDot" style="display:none;"></span></button>
+        <div class="tb-clock" id="clock">--:--:--</div>
+      </div>
+    </header>
+    <div class="content" id="content">
+      <div class="page active" id="page-home"><div class="filter-row" id="homeFilters"></div><h2 class="sec-title">Быстрый доступ</h2><div class="staff-grid" id="quickAccess"></div></div>
+
+      <div class="page" id="page-news">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+          <h2 class="sec-title" style="margin:0;">Оповещения и новости</h2>
+          <button class="admin-btn" id="btnAddNews" style="display:none;">+ Опубликовать</button>
+        </div>
+        <div id="newsFeed"></div>
+      </div>
+
+      <div class="page" id="page-calendar"><div class="cal-header"><div class="cal-title" id="calTitle"></div><div class="cal-nav"><button id="calPrev">← Назад</button><button id="calToday" class="primary">Сегодня</button><button id="calNext">Вперёд →</button></div></div><div class="cal-grid" id="calGrid"></div></div>
+
+      <div class="page" id="page-checks">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+          <h2 class="sec-title" style="margin:0;">Инспекции и контрольные мероприятия</h2>
+          <button class="admin-btn" id="btnAddInspection" style="display:none;">+ Добавить инспекцию</button>
+        </div>
+        <div id="checksFeed"></div>
+      </div>
+
+      <div class="page" id="page-dossier"><h2 class="sec-title">Личные дела сотрудников</h2><div class="table-wrap"><table class="dossier"><thead><tr><th>№</th><th>ФИО</th><th>Звание</th><th>Должность</th><th>Онлайн</th><th>В службе</th><th>Статус</th></tr></thead><tbody id="dossierBody"></tbody></table></div></div>
+      <div class="page" id="page-premiums"><h2 class="sec-title">Премирование</h2><div id="premiumsContainer"></div></div>
+      <div class="page" id="page-leadership"><h2 class="sec-title">Начальник управления</h2><div class="staff-grid" id="gridChief"></div><div id="deputiesBlock"><h2 class="sec-title">Заместители начальника</h2><div class="staff-grid" id="gridDeputies"></div></div><div id="assistantsBlock"><h2 class="sec-title">Помощники начальника</h2><div class="staff-grid" id="gridAssistants"></div></div><h2 class="sec-title">Начальники служб</h2><div class="staff-grid" id="gridHeads"></div><h2 class="sec-title">Заместители начальников служб</h2><div class="staff-grid" id="gridDeps"></div></div>
+      <div class="page" id="page-structure"><div id="structureContainer"></div></div>
+
+      <div class="page" id="page-law">
+        <h2 class="sec-title">Уголовный кодекс Российской Федерации</h2>
+        <div class="law-toolbar">
+          <input type="text" id="lawSearch" placeholder="Поиск по номеру статьи, названию или наказанию…">
+          <select id="lawChapter">
+            <option value="">Все главы</option>
+          </select>
+        </div>
+        <div class="law-table">
+          <table>
+            <thead><tr><th>Статья</th><th>Пояснение</th><th>Наказание</th></tr></thead>
+            <tbody id="lawBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page" id="page-requests"><h2 class="sec-title">Заявки на службу</h2><div id="requestsContainer"></div></div>
+      <div class="page" id="page-admin">
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-atab="users">Сотрудники</button>
+          <button class="admin-tab" data-atab="pool">Пул премий</button>
+        </div>
+        <div class="admin-panel active" id="atab-users"><h2 class="sec-title">Управление сотрудниками</h2><div id="usersList"></div></div>
+        <div class="admin-panel" id="atab-pool"><h2 class="sec-title">Пул премий</h2><div id="poolAdminContent"></div></div>
+      </div>
+      <div class="page" id="page-analytics"><h2 class="sec-title">Сводные показатели</h2><div class="filter-row" id="analyticsStats"></div><h2 class="sec-title">Распределение по службам</h2><div id="analyticsFeed"></div></div>
+      <div class="page" id="page-contacts">
+        <h2 class="sec-title">Связь с нами</h2>
+        <div class="contacts-grid">
+          <div class="contact-card"><div class="c-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div><span class="c-badge">Оперативная связь</span><div class="c-title">Канал связи №1</div><div class="c-sub">Обращения по вопросам деятельности управления.</div><div class="c-val">dark_knight0410</div></div>
+          <div class="contact-card"><div class="c-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div><span class="c-badge">Оперативная связь</span><div class="c-title">Канал связи №2</div><div class="c-sub">Кадровые вопросы.</div><div class="c-val">mlanwz</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="personModal"><div class="modal wide"><button class="modal-close" data-close>×</button><div id="personModalBody"></div></div></div>
+<div class="overlay" id="rankModal"><div class="modal"><button class="modal-close" data-close>×</button><h3 style="font-size:16px;color:#fff;font-weight:700;margin-bottom:6px;" id="rankModalTitle"></h3><p style="font-size:12px;color:var(--muted);margin-bottom:18px;" id="rankModalSub"></p><div class="ranks-list" id="ranksList"></div></div></div>
+<div class="overlay" id="posModal"><div class="modal"><button class="modal-close" data-close>×</button><h3 style="font-size:16px;color:#fff;font-weight:700;margin-bottom:6px;">Назначение на должность</h3><p style="font-size:12px;color:var(--muted);margin-bottom:18px;" id="posModalSub"></p><div id="posList"></div></div></div>
+<div class="overlay" id="confirmModal"><div class="modal"><button class="modal-close" data-close>×</button><h3 style="font-size:16px;color:#fff;font-weight:700;margin-bottom:6px;" id="confirmTitle"></h3><p style="font-size:13px;color:#c6d2e4;margin-bottom:18px;line-height:1.6;" id="confirmText"></p><div style="display:flex;gap:10px;"><button class="admin-btn" id="confirmYes">Подтвердить</button><button class="admin-btn red" data-close>Отмена</button></div></div></div>
+<div class="overlay" id="editModal"><div class="modal"><button class="modal-close" data-close>×</button><h3 style="font-size:16px;color:#fff;font-weight:700;margin-bottom:6px;">Редактирование</h3><div class="edit-form" id="editForm"></div><div style="display:flex;gap:10px;margin-top:10px;"><button class="admin-btn" id="editSave">Сохранить</button><button class="admin-btn red" data-close>Отмена</button></div></div></div>
+<div class="overlay" id="pwdModal"><div class="modal"><button class="modal-close" data-close>×</button><h3 style="font-size:16px;color:#fff;font-weight:700;margin-bottom:6px;">Смена пароля</h3><div class="admin-field"><label>Текущий пароль</label><input type="password" id="pwdOld"></div><div class="admin-field"><label>Новый пароль</label><input type="password" id="pwdNew"></div><div class="admin-field"><label>Повторите</label><input type="password" id="pwdNew2"></div><div class="login-error" id="pwdErr"></div><div style="display:flex;gap:10px;"><button class="admin-btn" id="pwdSave">Сменить</button><button class="admin-btn red" data-close>Отмена</button></div></div></div>
+
+<div class="overlay" id="insModal"><div class="modal wide"><button class="modal-close" data-close>×</button>
+  <h3 style="font-size:18px;color:#fff;font-weight:700;margin-bottom:8px;" id="insModalTitle">Новая инспекция</h3>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:22px;" id="insModalSub">Заполните данные о проверке</p>
+  <div class="admin-field"><label>Название</label><input type="text" id="insTitle"></div>
+  <div class="admin-field"><label>Организация</label><input type="text" id="insOrg"></div>
+  <div class="admin-field"><label>Инспекторы</label><div id="insInspectorsBox" style="max-height:200px;overflow-y:auto;background:#061020;border:1px solid var(--line);border-radius:6px;padding:10px;"></div><div id="insSelectedTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;"></div></div>
+  <div class="edit-form">
+    <div class="admin-field"><label>Статус</label><select id="insStatus"><option value="Запланированная">Запланированная</option><option value="Внеплановая">Внеплановая</option></select></div>
+    <div class="admin-field"><label>Средний балл (0-10)</label><input type="number" id="insScore" min="0" max="10" step="0.1"></div>
+  </div>
+  <div class="admin-field"><label>Результат</label><select id="insResult"><option>В работе</option><option>Успешно</option><option>Провалена</option></select></div>
+  <div class="login-error" id="insError"></div>
+  <div style="display:flex;gap:10px;margin-top:10px;"><button class="admin-btn" id="insSave">Сохранить</button><button class="admin-btn red" data-close>Отмена</button></div>
+</div></div>
+
+<div class="overlay" id="newsModal"><div class="modal wide"><button class="modal-close" data-close>×</button>
+  <h3 style="font-size:18px;color:#fff;font-weight:700;margin-bottom:8px;">Публикация новости</h3>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:22px;">Текст можно форматировать. Картинки вставляются как ссылки или файлы.</p>
+
+  <div class="admin-field"><label>Заголовок</label><input type="text" id="newsTitleInput" placeholder="Например: Общее собрание управления"></div>
+
+  <div class="admin-field"><label>Форматирование</label>
+    <div class="news-toolbar">
+      <button class="news-tb-btn" data-cmd="bold" title="Жирный" style="font-weight:900;">B</button>
+      <button class="news-tb-btn" data-cmd="italic" title="Курсив" style="font-style:italic;">I</button>
+      <button class="news-tb-btn" data-cmd="underline" title="Подчёркнутый" style="text-decoration:underline;">U</button>
+      <button class="news-tb-btn" data-cmd="strikeThrough" title="Зачёркнутый" style="text-decoration:line-through;">S</button>
+      <span style="width:8px;"></span>
+      <button class="news-tb-btn" data-size="3" title="Маленький" style="font-size:11px;">A</button>
+      <button class="news-tb-btn" data-size="4" title="Обычный" style="font-size:14px;">A</button>
+      <button class="news-tb-btn" data-size="5" title="Крупный" style="font-size:17px;">A</button>
+      <button class="news-tb-btn" data-size="6" title="Огромный" style="font-size:20px;">A</button>
+      <span style="width:8px;"></span>
+      <button class="news-tb-btn" data-color="#ffffff" title="Белый" style="color:#fff;">●</button>
+      <button class="news-tb-btn" data-color="#e6c458" title="Золотой" style="color:#e6c458;">●</button>
+      <button class="news-tb-btn" data-color="#e05454" title="Красный" style="color:#e05454;">●</button>
+      <button class="news-tb-btn" data-color="#4ade80" title="Зелёный" style="color:#4ade80;">●</button>
+      <button class="news-tb-btn" data-color="#6eb3ff" title="Синий" style="color:#6eb3ff;">●</button>
+      <button class="news-tb-btn" data-color="#9d6eff" title="Фиолетовый" style="color:#9d6eff;">●</button>
+      <span style="width:8px;"></span>
+      <button class="news-tb-btn" id="newsAddImg" title="Вставить картинку">🖼</button>
+      <button class="news-tb-btn" data-cmd="insertUnorderedList" title="Список">•</button>
+    </div>
+  </div>
+
+  <div class="admin-field"><label>Текст</label>
+    <div class="news-editor" id="newsEditor" contenteditable="true"></div>
+  </div>
+
+  <div class="admin-field"><label>Закрепить новость</label>
+    <select id="newsPin"><option value="no">Нет</option><option value="yes">Да (сверху списка)</option></select>
+  </div>
+
+  <div class="login-error" id="newsError"></div>
+  <div style="display:flex;gap:10px;margin-top:10px;">
+    <button class="admin-btn" id="newsSave">Опубликовать</button>
+    <button class="admin-btn red" data-close>Отмена</button>
+  </div>
+</div></div>
+
+<script>
+/* ============================================================
+   FSB PERSISTENCE LAYER — работает в двух режимах:
+   1. Локальный (localStorage + BroadcastChannel) — по умолчанию
+   2. Серверный (REST API на /api/state) — если сервер доступен
+   ============================================================ */
+(function(){
+  'use strict';
+
+  var STORAGE_KEY = 'fsb_kutuzovsky_state_v1';
+  var SYNC_PREFIX = 'fsb_sync_';
+  var PWD_SALT    = 'fsb_kutuzovsky_salt_2026';
+
+  /* HTTPS redirect */
+  if(location.protocol === 'http:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'){
+    location.replace('https://' + location.host + location.pathname + location.search);
+  }
+
+  window.FSBHash = {
+    hash: async function(pwd){
+      if(!pwd) return '';
+      var enc  = new TextEncoder();
+      var data = enc.encode(PWD_SALT + '::' + pwd);
+      var buf  = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    },
+    isHash: function(v){ return typeof v === 'string' && /^[a-f0-9]{64}$/.test(v); },
+    generate: function(len){
+      len = len || 10;
+      var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+      var out = ''; var arr = new Uint32Array(len);
+      crypto.getRandomValues(arr);
+      for(var i=0;i<len;i++) out += chars[arr[i] % chars.length];
+      return out;
+    }
+  };
+
+  window.FSBSync = (function(){
+    var listeners = [];
+    window.addEventListener('storage', function(ev){
+      if(ev.key && ev.key.indexOf(SYNC_PREFIX) === 0 && ev.newValue){
+        try { listeners.forEach(function(fn){ try{ fn(JSON.parse(ev.newValue)); }catch(e){} }); } catch(e){}
+      }
+    });
+    return {
+      broadcast: function(msg){
+        try {
+          var key = SYNC_PREFIX + Date.now() + '_' + Math.random().toString(36).slice(2);
+          localStorage.setItem(key, JSON.stringify(msg));
+          localStorage.removeItem(key);
+        } catch(e){}
+      },
+      on: function(fn){ listeners.push(fn); }
+    };
+  })();
+
+  /* Режим: сервер или локально */
+  var MODE = 'local';
+  var API_BASE = '/api';
+  var saveTimer = null;
+  var lastServerVersion = 0;
+
+  function setSyncStatus(state, text){
+    var el = document.getElementById('syncStatus');
+    var t  = document.getElementById('syncStatusText');
+    if(!el || !t) return;
+    el.classList.remove('online','offline','error');
+    if(state) el.classList.add(state);
+    t.textContent = text;
+  }
+
+  /* Определяем, доступен ли сервер */
+  async function detectMode(){
+    try {
+      var res = await fetch(API_BASE + '/health', {method:'GET', cache:'no-store'});
+      if(res.ok){
+        MODE = 'server';
+        setSyncStatus('online', 'Синхронизация');
+        return true;
+      }
+    } catch(e){}
+    MODE = 'local';
+    setSyncStatus('offline', 'Локальный режим');
+    return false;
+  }
+
+  window.FSBStorage = {
+    load: function(){
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch(e){ console.error('load:', e); return null; }
+    },
+    save: function(state){
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); return true; }
+      catch(e){ console.error('save:', e); return false; }
+    },
+    clear: function(){ try { localStorage.removeItem(STORAGE_KEY); } catch(e){} }
+  };
+
+  window.FSBApi = {
+    getMode: function(){ return MODE; },
+    detect: detectMode,
+    async pull(){
+      if(MODE !== 'server') return null;
+      try {
+        var res = await fetch(API_BASE + '/state', {cache:'no-store'});
+        if(!res.ok) throw new Error('pull failed');
+        var data = await res.json();
+        lastServerVersion = data.version || 0;
+        return data.state;
+      } catch(e){ setSyncStatus('error','Сервер недоступен'); return null; }
+    },
+    async push(state){
+      if(MODE !== 'server') return false;
+      try {
+        var res = await fetch(API_BASE + '/state', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({state:state, version:lastServerVersion})
+        });
+        if(!res.ok) throw new Error('push failed');
+        var data = await res.json();
+        lastServerVersion = data.version || (lastServerVersion + 1);
+        setSyncStatus('online','Сохранено');
+        return true;
+      } catch(e){ setSyncStatus('error','Ошибка сохранения'); return false; }
+    },
+    schedulePush: function(state){
+      if(MODE !== 'server') return;
+      if(saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(function(){ window.FSBApi.push(state); }, 500);
+    },
+    startPolling: function(onUpdate){
+      if(MODE !== 'server') return;
+      setInterval(async function(){
+        try {
+          var res = await fetch(API_BASE + '/state/version', {cache:'no-store'});
+          if(!res.ok) return;
+          var data = await res.json();
+          if(data.version > lastServerVersion){
+            var pulled = await window.FSBApi.pull();
+            if(pulled && onUpdate) onUpdate(pulled);
+          }
+        } catch(e){}
+      }, 4000);
+    }
+  };
+
+  window.FSBValidate = {
+    name: function(s){
+      if(typeof s !== 'string') return null;
+      s = s.trim();
+      if(s.length < 2 || s.length > 60) return null;
+      if(!/^[А-Яа-яЁёA-Za-z\s\-]+$/.test(s)) return null;
+      return s;
+    },
+    pwd: function(s){
+      if(typeof s !== 'string') return null;
+      if(s.length < 4 || s.length > 100) return null;
+      return s;
+    }
+  };
+})();
+</script>
+
+<script>
+window.addEventListener("error", function(e){
+  var err = document.getElementById("boot-error");
+  var txt = document.getElementById("boot-error-text");
+  if(err && txt){
+    err.style.display = "block";
+    txt.textContent = "Ошибка: " + e.message + "\nФайл: " + (e.filename||"inline") + "\nСтрока: " + (e.lineno||"?");
+  }
+});
+
+try {
+
+/* ============ КОНСТАНТЫ ============ */
+var RANKS = ["Старший сержант","Старшина","Прапорщик","Старший прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии"];
+var RANK_INDEX = {}; RANKS.forEach(function(r,i){ RANK_INDEX[r] = i; });
+var RANK_SALARIES = {"Старший сержант":19000,"Старшина":21000,"Прапорщик":23000,"Старший прапорщик":25000,"Младший лейтенант":27000,"Лейтенант":29000,"Старший лейтенант":31000,"Капитан":32000,"Майор":35000,"Подполковник":42000,"Полковник":45000,"Генерал-майор":50000,"Генерал-лейтенант":55000,"Генерал-полковник":60000,"Генерал армии":65000};
+var REGISTER_RANKS = RANKS.filter(function(r){ return RANK_INDEX[r] <= RANK_INDEX["Полковник"]; });
+
+var POSITIONS = {
+  "chief_ru":{name:"Начальник Регионального управления ФСБ по Кутузовскому ФО",group:"Руководство РУ",minRank:"Генерал-майор"},
+  "deputy_first":{name:"Первый заместитель начальника Регионального управления ФСБ по Кутузовскому ФО",group:"Руководство РУ",minRank:"Полковник"},
+  "deputy_ru":{name:"Заместитель начальника Регионального управления ФСБ по Кутузовскому ФО",group:"Руководство РУ",minRank:"Полковник"},
+  "assistant_head":{name:"Помощник начальника Регионального управления ФСБ по Кутузовскому ФО",group:"Руководство РУ",minRank:"Старший сержант",multiple:true},
+  "deputy_ru_m":{name:"Заместитель начальника РУ ФСБ — начальник первой оперативно-следственной службы",group:"Руководство РУ / Служба №1",minRank:"Полковник",alsoPosition:"chief_m"},
+  "chief_m":{name:"Начальник первой оперативно-следственной службы РУ ФСБ по КФО",group:"Служба №1",minRank:"Полковник"},
+  "deputy_m_1":{name:"Заместитель начальника первой службы РУ ФСБ по КФО",group:"Служба №1",minRank:"Майор"},
+  "deputy_m_2":{name:"Заместитель начальника первой службы РУ ФСБ по КФО",group:"Служба №1",minRank:"Майор"},
+  "chief_k":{name:"Начальник второй оперативно-следственной службы РУ ФСБ по КФО",group:"Служба №2",minRank:"Подполковник"},
+  "deputy_k_1":{name:"Заместитель начальника второй службы РУ ФСБ по КФО",group:"Служба №2",minRank:"Майор"},
+  "deputy_k_2":{name:"Заместитель начальника второй службы РУ ФСБ по КФО",group:"Служба №2",minRank:"Майор"},
+  "deputy_k_3":{name:"Заместитель начальника второй службы РУ ФСБ по КФО",group:"Служба №2",minRank:"Майор"},
+  "chief_a":{name:"Начальник третьей службы по защите конституционного строя РУ ФСБ по КФО",group:"Служба №3",minRank:"Подполковник"},
+  "deputy_a_1":{name:"Заместитель начальника третьей службы РУ ФСБ по КФО",group:"Служба №3",minRank:"Майор"},
+  "deputy_a_2":{name:"Заместитель начальника третьей службы РУ ФСБ по КФО",group:"Служба №3",minRank:"Майор"},
+  "deputy_a_3":{name:"Заместитель начальника третьей службы РУ ФСБ по КФО",group:"Служба №3",minRank:"Майор"},
+  "chief_o":{name:"Начальник четвёртой службы организационно-кадровой работы РУ ФСБ по КФО",group:"Служба №4",minRank:"Подполковник"},
+  "deputy_o_1":{name:"Заместитель начальника четвёртой службы РУ ФСБ по КФО",group:"Служба №4",minRank:"Майор"},
+  "deputy_o_2":{name:"Заместитель начальника четвёртой службы РУ ФСБ по КФО",group:"Служба №4",minRank:"Майор"},
+  "chief_aps":{name:"Начальник пятой службы прикомандированных сотрудников РУ ФСБ по КФО",group:"Служба №5 (АПС)",minRank:"Подполковник"},
+  "deputy_aps_1":{name:"Заместитель начальника пятой службы РУ ФСБ по КФО",group:"Служба №5 (АПС)",minRank:"Капитан"},
+  "service_m":{name:"Первая оперативно-следственная служба РУ ФСБ по КФО",group:"Службы",minRank:"Старший сержант",serviceOnly:true},
+  "service_k":{name:"Вторая оперативно-следственная служба РУ ФСБ по КФО",group:"Службы",minRank:"Старший сержант",serviceOnly:true},
+  "service_a":{name:"Третья служба по защите конституционного строя РУ ФСБ по КФО",group:"Службы",minRank:"Старший сержант",serviceOnly:true},
+  "service_o":{name:"Четвёртая служба организационно-кадровой работы РУ ФСБ по КФО",group:"Службы",minRank:"Старший сержант",serviceOnly:true},
+  "service_aps":{name:"Пятая служба прикомандированных сотрудников РУ ФСБ по КФО",group:"Службы",minRank:"Старший сержант",serviceOnly:true},
+  "employee":{name:"Сотрудник ФСБ",group:"Кадровый резерв",minRank:"Старший сержант"}
+};
+
+var DEPARTMENTS = [
+  {id:1,badge:"Управление «М» ФСБ",title:"Первая оперативно-следственная служба",serviceCode:"service_m",sub:"Начальник — заместитель начальника Регионального управления",desc:"Обособленное структурное подразделение прямого подчинения Начальнику управления ФСБ по региону.",positions:["chief_m","deputy_m_1","deputy_m_2"],headPos:"chief_m"},
+  {id:2,badge:"Управление «К» ФСБ",title:"Вторая оперативно-следственная служба",serviceCode:"service_k",sub:"Начальник — подполковник • заместители",desc:"Следственная деятельность, контроль за оборотом наркотиков, оружия и контрабанды.",positions:["chief_k","deputy_k_1","deputy_k_2","deputy_k_3"],headPos:"chief_k"},
+  {id:3,badge:"Управление «А» ФСБ",title:"Третья служба по защите конституционного строя",serviceCode:"service_a",sub:"Начальник — подполковник • заместители",desc:"Основное силовое подразделение ФСБ. Антитеррористические операции.",positions:["chief_a","deputy_a_1","deputy_a_2","deputy_a_3"],headPos:"chief_a"},
+  {id:4,badge:"Управление «О» ФСБ",title:"Четвёртая служба организационно-кадровой работы",serviceCode:"service_o",sub:"Начальник — подполковник • заместители",desc:"Кадровые потребности ФСБ, Академия ФСБ.",positions:["chief_o","deputy_o_1","deputy_o_2"],headPos:"chief_o"},
+  {id:5,badge:"АПС ФСБ",title:"Пятая служба прикомандированных сотрудников",serviceCode:"service_aps",sub:"Начальник — подполковник • заместитель",desc:"Прикомандирование сотрудников к МВД, Росгвардии, ВС РФ, УИС, СМИ.",positions:["chief_aps","deputy_aps_1"],headPos:"chief_aps"}
+];
+
+var LEADERSHIP_DEPUTY_POSITIONS = ["deputy_first","deputy_ru","deputy_ru_m"];
+var LEADERSHIP_ASSISTANT_POSITIONS = ["assistant_head"];
+
+var CRIMINAL_CODE = [
+  {chapter:"Раздел IV. Преступления против личности", art:"37.1", title:"Убийство", punish:"7 лет (СПРП ★★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"37.2", title:"Убийство двух и более лиц / по мотивам ненависти", punish:"8 лет (СПРП ★★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"38.1", title:"Причинение тяжкого вреда здоровью", punish:"5 лет (СПРП ★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"38.2", title:"Тяжкий вред двум лицам / из хулиганских побуждений", punish:"7 лет (СПРП ★★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"39", title:"Угроза убийством или тяжким вредом", punish:"4 года (СПРП ★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"40", title:"Изнасилование", punish:"6 лет (СПРП ★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"41.1", title:"Похищение человека", punish:"6 лет (СПРП ★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"41.2", title:"Похищение группой / с оружием", punish:"6 лет (СПРП ★★★★)"},
+  {chapter:"Раздел IV. Преступления против личности", art:"42", title:"Незаконное лишение свободы", punish:"4 года (СПРП ★★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"43", title:"Нарушение неприкосновенности жилища", punish:"Штраф 20 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"44", title:"Кража", punish:"Штраф 30 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"45.1", title:"Присвоение или растрата", punish:"Штраф 50 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"45.2", title:"Мошенничество", punish:"Штраф 50 000 ₽ или 3 года (★★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"46.1", title:"Грабеж", punish:"4 года (★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"46.2", title:"Грабеж группой / с проникновением", punish:"5 лет (★★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"47.1", title:"Разбой", punish:"5 лет (★★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"47.2", title:"Разбой группой / с оружием", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"47.3", title:"Разбой с тяжким вредом", punish:"7 лет (★★★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"48", title:"Умышленное уничтожение имущества", punish:"Штраф 35 000 ₽ или 2 года (★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"48-1", title:"Порча государственной собственности", punish:"Штраф 50 000 ₽ или 3 года (★★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"49.1", title:"Угон автомобиля", punish:"Штраф 35 000 ₽ или 2 года (★★)"},
+  {chapter:"Глава XII. Преступления против собственности", art:"49.2", title:"Угон служебного автомобиля", punish:"Штраф 100 000 ₽ или 4 года (★★★★)"},
+  {chapter:"Глава XIII. Преступления в сфере экономики", art:"50", title:"Незаконное предпринимательство", punish:"Штраф 200 000 ₽ или 2 года (★★)"},
+  {chapter:"Глава XIII. Преступления в сфере экономики", art:"51", title:"Незаконное образование юридического лица", punish:"Штраф 250 000 ₽ или 5 лет (★★★)"},
+  {chapter:"Глава XIII. Преступления в сфере экономики", art:"52", title:"Уклонение от уплаты налогов", punish:"Штраф 500 000 ₽ или 3 года (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"53", title:"Террористический акт", punish:"8 лет (★★★★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"54", title:"Несообщение о преступлении", punish:"2 года (★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"55", title:"Захват заложника", punish:"7 лет (★★★★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"56", title:"Заведомо ложное сообщение об акте терроризма", punish:"6 лет (★★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"57", title:"Организация незаконного вооружённого формирования", punish:"7 лет (★★★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"58", title:"Бандитизм", punish:"8 лет (★★★★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"59", title:"Угон судна воздушного или водного транспорта", punish:"5 лет (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"60", title:"Массовые беспорядки", punish:"5 лет (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"61", title:"Хулиганство", punish:"Штраф 20 000 ₽ или 3 года (★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"62.1", title:"Проникновение на закрытый объект", punish:"Штраф 40 000 ₽ или 4 года (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"62.2", title:"Проникновение с совершением преступления", punish:"5 лет (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"62.3", title:"Проникновение на военный объект", punish:"Штраф 80 000 ₽ или 5 лет (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"62.4", title:"Проникновение госслужащим", punish:"Штраф 600 000 ₽ или 4 года (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"63.1", title:"Незаконный оборот оружия (от 100 ед.)", punish:"4 года (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"63.2", title:"Незаконные средства индивидуальной защиты", punish:"4 года (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"63.3", title:"Демонстративное ношение оружия", punish:"5 лет (★★★)"},
+  {chapter:"Раздел V. Преступления против безопасности", art:"63.4", title:"Причинение вреда с оружием", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XV. Преступления против здоровья населения", art:"64", title:"Незаконный оборот наркотических средств", punish:"5 лет (★★★)"},
+  {chapter:"Глава XV. Преступления против здоровья населения", art:"64.1", title:"Сбыт и производство наркотиков", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XV. Преступления против здоровья населения", art:"65", title:"Организация занятия проституцией", punish:"4 года (★★)"},
+  {chapter:"Глава XV. Преступления против здоровья населения", art:"66", title:"Жестокое обращение с животными", punish:"4 года (★★)"},
+  {chapter:"Глава XV. Преступления против здоровья населения", art:"67.1", title:"Неуплата штрафа до 30 000 ₽", punish:"3 года (★★★)"},
+  {chapter:"Глава XV. Преступления против здоровья населения", art:"67.2", title:"Неуплата штрафа 30 000 - 50 000 ₽", punish:"5 лет (★★★)"},
+  {chapter:"Глава XV. Преступления против здоровья населения", art:"67.3", title:"Неуплата штрафа свыше 50 000 ₽", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XVI. Преступления против безопасности движения", art:"68.1", title:"Нарушение ПДД, повлёкшее тяжкий вред", punish:"3 года (★★★)"},
+  {chapter:"Глава XVI. Преступления против безопасности движения", art:"68.2", title:"Нарушение ПДД со смертью", punish:"4 года (★★★★)"},
+  {chapter:"Глава XVI. Преступления против безопасности движения", art:"68.3", title:"Неисполнение предписаний надзора", punish:"Штраф 20 000 ₽ или 2 года (★★)"},
+  {chapter:"Глава XVI. Преступления против безопасности движения", art:"68.4", title:"Наезд на человека", punish:"Штраф 30 000 ₽ или 2 года (★★)"},
+  {chapter:"Глава XVI. Преступления против безопасности движения", art:"68.5", title:"Нарушение ПДД сотрудником госоргана", punish:"5 лет (★★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"69", title:"Государственная измена", punish:"15 лет (★★★★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"70", title:"Посягательство на жизнь гос. деятеля", punish:"5 лет (★★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"71", title:"Вооружённый мятеж", punish:"10 лет (★★★★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"72.1", title:"Экстремизм", punish:"6 лет (★★★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"72.2", title:"Публичные призывы к экстремизму", punish:"4 года (★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"73.1", title:"Призывы против безопасности государства", punish:"5 лет (★★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"73.2", title:"Призывы к нарушению территориальной целостности", punish:"Штраф 50 000 ₽ или 4 года (★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"74", title:"Разглашение государственной тайны", punish:"4 года (★★★★)"},
+  {chapter:"Раздел VI. Преступления против государственной власти", art:"75", title:"Незаконное получение гостайны", punish:"4 года (★★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"76.1", title:"Злоупотребление должностными полномочиями", punish:"Штраф 500 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"76.2", title:"Злоупотребление руководителем", punish:"Штраф 1 000 000 ₽ или 6 лет (★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"76.3", title:"Злоупотребление с тяжкими последствиями", punish:"7 лет (★★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"77.1", title:"Превышение должностных полномочий", punish:"Штраф 600 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"77.2", title:"Превышение полномочий руководителем", punish:"Штраф 2 000 000 ₽ или 6 лет (★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"77.3", title:"Превышение полномочий а) с применением насилия или угрозой применения насилия;​ б) с применением оружия или специальных средств;​ в) с причинением тяжких последствий;​ г) группой лиц по предварительному сговору или организованной группой;​ д) из корыстной или иной личной заинтересованности", punish:"От 3 до 7 лет (★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"77.4", title:"Незаконное задержание", punish:"Штраф 700 000 ₽ или 3 года (★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"77.5", title:"Незаконные требования сотрудника", punish:"Штраф 800 000 ₽ или 3 года (★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"78", title:"Неисполнение приказа", punish:"Штраф 500 000 ₽ или 3 года (★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"79", title:"Получение или дача взятки", punish:"8 лет (★★★★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"80.1", title:"Халатность", punish:"Штраф 800 000 ₽ или 2 года (★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"80.2", title:"Неисполнение обязанностей", punish:"6 лет (★★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"80.3", title:"Нарушение процессуальных норм", punish:"Штраф 1 000 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XVIII. Преступления против гос. службы", art:"80.4", title:"Отказ в реализации прав задержанного", punish:"Штраф 1 250 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"81.1", title:"Воспрепятствование правосудию", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"81.2", title:"Вмешательство в расследование", punish:"3 года (★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"81.3", title:"Воспрепятствование с использованием положения", punish:"5 лет (★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"81-1", title:"Неисполнение требований прокурора и следователя", punish:"Штраф 1 000 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"82", title:"Влияние на уголовное дело", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"83", title:"Влияние на судебное дело", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"84", title:"Неуважение к суду", punish:"Штраф 250 000 ₽ или 2 года (★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"85", title:"Привлечение заведомо невиновного", punish:"10 лет (★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"86", title:"Заведомо ложный донос", punish:"Штраф 300 000 ₽ или 4 года (★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"86-1", title:"Заведомо ложные показания", punish:"6 лет (★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"86-2", title:"Отказ свидетеля от дачи показаний", punish:"Штраф 800 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"87.1", title:"Побег из места лишения свободы", punish:"4 года (★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"87.2", title:"Побег группой / с насилием", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"87.3", title:"Побег с насилием опасным для жизни", punish:"8 лет (★★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"88.1", title:"Неисполнение приговора суда", punish:"Штраф 1 000 000 ₽ или 4 года (★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"88.2", title:"Повторное неисполнение судебного акта", punish:"8 лет (★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"88-1", title:"Неисполнение решения прокуратуры / СК", punish:"10 лет (★★★★)"},
+  {chapter:"Глава XIX. Преступления против правосудия", art:"88-2", title:"Неисполнение представления прокуратуры", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"89", title:"Посягательство на жизнь сотрудника", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"90.1", title:"Насилие в отношении представителя власти", punish:"4 года (★★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"90.2", title:"Опасное для жизни насилие", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"90.3", title:"Угроза насилием в отношении власти", punish:"2 года (★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"91", title:"Оскорбление представителя власти", punish:"Штраф 50 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"92.1", title:"Документы с поддельной фотографией", punish:"Штраф 250 000 - 500 000 ₽"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"92.2", title:"Подделка документов и наград", punish:"6 лет (★★★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"93", title:"Помеха сотруднику госвласти", punish:"Штраф 60 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XX. Преступления против порядка управления", art:"94", title:"Присвоение полномочий должностного лица", punish:"Штраф 350 000 ₽ или 6 лет (★★★)"},
+  {chapter:"Глава XXI. Преступления против гос. символов", art:"95", title:"Надругательство над гербом или флагом", punish:"Штраф 100 000 ₽ или 2 года (★)"},
+  {chapter:"Глава XXI. Преступления против гос. символов", art:"96.1", title:"Уничтожение объектов культурного наследия", punish:"Штраф 150 000 ₽ или 2 года (★★)"},
+  {chapter:"Глава XXI. Преступления против гос. символов", art:"96.2", title:"То же группой лиц", punish:"Штраф 300 000 ₽ или 6 лет (★★★)"},
+  {chapter:"Глава XXI. Преступления против гос. символов", art:"97.1", title:"Надругательство над воинскими захоронениями", punish:"Штраф 250 000 ₽ или 4 года (★★★★)"},
+  {chapter:"Глава XXI. Преступления против гос. символов", art:"97.2", title:"То же группой / в отношении ВОВ", punish:"Штраф 500 000 ₽ или 7 лет (★★★★)"},
+  {chapter:"Глава XXI. Преступления против гос. символов", art:"98.1", title:"Надругательство над телами умерших", punish:"Штраф 50 000 ₽ или 1 год (★)"},
+  {chapter:"Глава XXI. Преступления против гос. символов", art:"98.2", title:"То же группой / по мотивам ненависти", punish:"Штраф 100 000 ₽ или 3 года (★★)"},
+  {chapter:"Глава XXII. Преступления против избирательных прав", art:"99.1", title:"Подкуп избирателей", punish:"6 лет (★★★★★★)"},
+  {chapter:"Глава XXII. Преступления против избирательных прав", art:"99.2", title:"Подкуп группой лиц", punish:"8 лет (★★★★★★)"}
+];
+
+/* ============ СОСТОЯНИЕ ============ */
+var currentUser = null;
+
+var STAFF = {
+  "balandin_ms":{id:"balandin_ms",name:"Максим Баландин",rank:"Генерал-майор",positionId:"chief_ru",post:"Начальник РУ ФСБ по Кутузовскому ФО",img:"img/balandin_m.jpg",dept:"Руководство РУ",since:"2022-01-15",salary:50000,status:"active",fullAccess:false,warnings:[],reprimands:[],logs:[],login:"Максим Баландин",pwd:"fsb2026",lastSeen:null},
+  "balandin_ss":{id:"balandin_ss",name:"Святослав Баландин",rank:"Полковник",positionId:"deputy_first",post:"Первый заместитель начальника РУ ФСБ по Кутузовскому ФО",img:"img/balandin_s.jpg",dept:"Руководство РУ",since:"2022-03-01",salary:45000,status:"active",fullAccess:true,warnings:[],reprimands:[],logs:[],login:"Святослав Баландин",pwd:"10112010",lastSeen:null},
+  "blago_aa":{id:"blago_aa",name:"Артем Благо",rank:"Полковник",positionId:"deputy_ru_m",post:"Заместитель начальника РУ — начальник первой оперативно-следственной службы",img:"img/blago.jpg",dept:"Руководство РУ / Служба №1",since:"2022-03-01",salary:45000,status:"active",fullAccess:false,warnings:[],reprimands:[],logs:[],login:"Артем Благо",pwd:"fsb2026",lastSeen:null},
+  "konkov_ma":{id:"konkov_ma",name:"Максим Коньков",rank:"Майор",positionId:"assistant_head",post:"Помощник начальника Регионального управления ФСБ по Кутузовскому ФО",img:"img/konkov.jpg",dept:"Руководство РУ",since:"2023-06-10",salary:35000,status:"active",fullAccess:false,warnings:[],reprimands:[],logs:[],login:"Максим Коньков",pwd:"fsb2026",lastSeen:null}
+};
+
+var registerRequests = [];
+var calEvents = {};
+var systemLogs = [{time:new Date().toISOString(),text:"Инициализация РУ ФСБ «Кутузовский» ФО",type:"gold"}];
+var premiumPool = {balance:0, logs:[], fundDates:[]};
+
+var inspections = [
+  {id:"ИНС-015",title:"Плановая проверка УВД",org:"УВД Кутузовского ФО",inspectors:["Максим Баландин","Святослав Баландин"],status:"Запланированная",score:null,result:"В работе",date:"11.01.2026"},
+  {id:"ИНС-014",title:"Проверка организации УИС",org:"УИС Кутузовского ФО",inspectors:["Артем Благо"],status:"Внеплановая",score:8.5,result:"Успешно",date:"09.01.2026"},
+  {id:"ИНС-013",title:"Контрольная проверка Росгвардии",org:"Росгвардия",inspectors:["Максим Коньков"],status:"Запланированная",score:6.2,result:"Провалена",date:"22.12.2025"}
+];
+
+var news = [
+  {id:"N-001",title:"Приветствие",content:"<p>Добро пожаловать в РУ ФСБ «Кутузовский» ФО. Система находится в разработке. В случае вопросов обращайтесь к руководству.</p>",authorId:"balandin_ms",authorName:"Максим Баландин",authorRank:"Генерал-майор",authorAvatar:"МБ",date:new Date().toLocaleString("ru-RU"),pinned:true}
+];
+
+/* ============ STATE PERSISTENCE ============ */
+var _savePending = false;
+var _lastSyncTs  = 0;
+
+function serializeState(){
+  return {
+    STAFF: STAFF,
+    registerRequests: registerRequests,
+    calEvents: calEvents,
+    systemLogs: systemLogs,
+    premiumPool: premiumPool,
+    inspections: inspections,
+    news: news,
+    savedAt: new Date().toISOString()
+  };
+}
+
+function saveAll(){
+  if(_savePending) return;
+  _savePending = true;
+  setTimeout(function(){
+    _savePending = false;
+    var state = serializeState();
+    FSBStorage.save(state);
+    FSBApi.schedulePush(state);
+    FSBSync.broadcast({type:'state-update', ts: Date.now()});
+  }, 120);
+}
+
+function loadStateFromStorage(){
+  var saved = FSBStorage.load();
+  if(!saved) return false;
+  try {
+    if(saved.STAFF)            STAFF = saved.STAFF;
+    if(saved.registerRequests) registerRequests = saved.registerRequests;
+    if(saved.calEvents)        calEvents = saved.calEvents;
+    if(saved.systemLogs)       systemLogs = saved.systemLogs;
+    if(saved.premiumPool)      premiumPool = saved.premiumPool;
+    if(saved.inspections)      inspections = saved.inspections;
+    if(saved.news)             news = saved.news;
+    return true;
+  } catch(e){ console.error('loadState:', e); return false; }
+}
+
+async function migratePasswords(){
+  var ids = Object.keys(STAFF);
+  var changed = false;
+  for(var i=0;i<ids.length;i++){
+    var p = STAFF[ids[i]];
+    if(p.pwd && !FSBHash.isHash(p.pwd)){
+      p.pwdHash = await FSBHash.hash(p.pwd);
+      delete p.pwd;
+      changed = true;
+    } else if(p.pwd && FSBHash.isHash(p.pwd)){
+      p.pwdHash = p.pwd;
+      delete p.pwd;
+      changed = true;
+    }
+  }
+  if(changed) saveAll();
+}
+
+FSBSync.on(function(msg){
+  if(msg.type === 'state-update' && msg.ts > _lastSyncTs + 300){
+    _lastSyncTs = msg.ts;
+    if(loadStateFromStorage()){
+      if(currentUser && STAFF[currentUser.id]) currentUser = STAFF[currentUser.id];
+      if(appInited) refreshAll();
+    }
+  }
+});
+
+loadStateFromStorage();
+
+/* ============ ПРАВА ============ */
+function canReviewRequests(){ return currentUser && (currentUser.fullAccess || RANK_INDEX[currentUser.rank] >= RANK_INDEX["Полковник"]); }
+function canSeeActions(){ return currentUser && RANK_INDEX[currentUser.rank] >= RANK_INDEX["Подполковник"]; }
+function canPublishNews(){ return currentUser && (currentUser.fullAccess || RANK_INDEX[currentUser.rank] >= RANK_INDEX["Подполковник"]); }
+function canManagePerson(target){
+  if(!currentUser || !canSeeActions()) return false;
+  if(target.id === currentUser.id) return false;
+  if(currentUser.fullAccess) return true;
+  var myLevel = Math.min(RANK_INDEX[currentUser.rank], RANK_INDEX["Полковник"]);
+  var targetLevel = RANK_INDEX[target.rank];
+  if(targetLevel >= RANK_INDEX["Генерал-майор"]) return false;
+  return targetLevel < myLevel;
+}
+
+/* ============ УТИЛИТЫ ============ */
+function initials(f){ return f.split(" ").slice(0,2).map(function(w){return w[0];}).join(""); }
+function esc(s){ return String(s||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function fmt(n){ return Number(n||0).toLocaleString("ru-RU"); }
+function calcService(since){
+  var start = new Date(since); var now = new Date();
+  var days = Math.floor((now - start) / 86400000);
+  var y = now.getFullYear() - start.getFullYear();
+  var m = now.getMonth() - start.getMonth();
+  var d = now.getDate() - start.getDate();
+  if(d < 0) m--; if(m < 0){ y--; m += 12; }
+  return {days:days, years:y, months:m};
+}
+function logAction(text, type){
+  systemLogs.unshift({time:new Date().toISOString(), text:text, type:type||"gold"});
+  if(systemLogs.length > 300) systemLogs.pop();
+  saveAll();
+}
+function pushToPerson(p, text){
+  if(!p.logs) p.logs = [];
+  p.logs.unshift({date:new Date().toLocaleString("ru-RU"), text:text});
+}
+function fmtLastSeen(p){
+  if(!p.lastSeen) return "никогда";
+  var d = new Date(p.lastSeen);
+  var diff = Math.floor((Date.now() - d) / 60000);
+  if(diff < 1) return "только что";
+  if(diff < 60) return diff + " мин назад";
+  if(diff < 1440) return Math.floor(diff/60) + " ч назад";
+  return d.toLocaleDateString("ru-RU");
+}
+function isOnline(p){ return p.lastSeen && (Date.now() - new Date(p.lastSeen).getTime()) < 300000; }
+
+function getStaffByPosition(posId){
+  return Object.values(STAFF).filter(function(s){
+    if(s.status === "fired") return false;
+    if(s.positionId === posId) return true;
+    if(POSITIONS[posId] && POSITIONS[posId].alsoPosition === s.positionId) return true;
+    var sPos = POSITIONS[s.positionId];
+    if(sPos && sPos.alsoPosition === posId) return true;
+    return false;
+  });
+}
+function getPositionName(posId){ return (POSITIONS[posId] && POSITIONS[posId].name) || posId; }
+function findAccountByName(name){
+  var key = name.toLowerCase().trim();
+  return Object.values(STAFF).find(function(s){ return s.login.toLowerCase().trim() === key; });
+}
+function shortPostFor(p){
+  if(!p || !p.positionId) return p && p.post ? p.post : "—";
+  var pid = p.positionId;
+  if(pid === "chief_ru") return "Начальник Регионального управления";
+  if(pid === "deputy_first") return "Первый заместитель начальника РУ";
+  if(pid === "deputy_ru") return "Заместитель начальника РУ";
+  if(pid === "deputy_ru_m") return "Заместитель начальника РУ — начальник первой службы";
+  if(pid === "assistant_head") return "Помощник начальника РУ";
+  if(pid === "chief_m") return "Начальник первой службы";
+  if(pid === "chief_k") return "Начальник второй службы";
+  if(pid === "chief_a") return "Начальник третьей службы";
+  if(pid === "chief_o") return "Начальник четвёртой службы";
+  if(pid === "chief_aps") return "Начальник пятой службы";
+  if(pid.indexOf("deputy_m_") === 0) return "Заместитель начальника первой службы";
+  if(pid.indexOf("deputy_k_") === 0) return "Заместитель начальника второй службы";
+  if(pid.indexOf("deputy_a_") === 0) return "Заместитель начальника третьей службы";
+  if(pid.indexOf("deputy_o_") === 0) return "Заместитель начальника четвёртой службы";
+  if(pid === "deputy_aps_1") return "Заместитель начальника пятой службы";
+  if(pid.indexOf("service_") === 0) return "Сотрудник службы";
+  if(pid === "employee") return "Сотрудник ФСБ";
+  return POSITIONS[pid] ? POSITIONS[pid].name : p.post;
+}
+
+/* ============ ВХОД ============ */
+var loginScreen = document.getElementById("loginScreen");
+var loginBox = document.getElementById("loginBox");
+var registerBox = document.getElementById("registerBox");
+var app = document.getElementById("app");
+
+document.getElementById("btnLogin").onclick = async function(){
+  var l = document.getElementById("inpLogin").value.trim();
+  var p = document.getElementById("inpPass").value;
+  var errEl = document.getElementById("loginError");
+
+  var cleanLogin = FSBValidate.name(l);
+  if(!cleanLogin){ errEl.textContent = "Введите имя и фамилию корректно"; errEl.classList.add("show"); setTimeout(function(){errEl.classList.remove("show");},2500); return; }
+  var cleanPwd = FSBValidate.pwd(p);
+  if(!cleanPwd){ errEl.textContent = "Некорректный пароль"; errEl.classList.add("show"); setTimeout(function(){errEl.classList.remove("show");},2500); return; }
+
+  var acc = findAccountByName(cleanLogin);
+  if(!acc){ errEl.textContent = "Сотрудник не найден"; errEl.classList.add("show"); setTimeout(function(){errEl.classList.remove("show");},2500); return; }
+
+  var inputHash  = await FSBHash.hash(cleanPwd);
+  var storedHash = acc.pwdHash || '';
+  if(!FSBHash.isHash(storedHash)){
+    storedHash = await FSBHash.hash(acc.pwd || '');
+    acc.pwdHash = storedHash; delete acc.pwd; saveAll();
+  }
+  if(storedHash !== inputHash){ errEl.textContent = "Неверный пароль"; errEl.classList.add("show"); setTimeout(function(){errEl.classList.remove("show");},2500); return; }
+
+  if(acc.status === "fired"){ errEl.textContent = "Уволен. Доступ закрыт."; errEl.classList.add("show"); return; }
+  acc.lastSeen = new Date().toISOString();
+  currentUser = acc;
+  sessionStorage.setItem("fsb_session", JSON.stringify({userId:acc.id, loginAt:new Date().toISOString()}));
+  saveAll();
+  loginScreen.classList.add("hidden"); app.classList.add("active"); initApp();
+};
+document.getElementById("inpPass").addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("btnLogin").click(); });
+document.getElementById("btnLogout").onclick = function(){
+  if(currentUser){ currentUser.lastSeen = new Date().toISOString(); saveAll(); }
+  sessionStorage.removeItem("fsb_session"); location.reload();
+};
+document.getElementById("btnRegisterOpen").onclick = function(){
+  loginBox.style.display = "none"; registerBox.style.display = "block";
+  var sel = document.getElementById("regRank");
+  sel.innerHTML = '<option value="">— Выберите звание —</option>' + REGISTER_RANKS.map(function(r){return '<option>'+esc(r)+'</option>';}).join("");
+};
+document.getElementById("btnRegisterBack").onclick = function(){ loginBox.style.display = "block"; registerBox.style.display = "none"; };
+
+document.getElementById("btnRegister").onclick = function(){
+  var first = document.getElementById("regFirst").value.trim();
+  var last = document.getElementById("regLast").value.trim();
+  var rank = document.getElementById("regRank").value;
+  var pwd = document.getElementById("regPass").value;
+  var err = document.getElementById("registerError"); var ok = document.getElementById("registerSuccess");
+  err.classList.remove("show"); ok.classList.remove("show");
+  if(!first || !last){ err.textContent = "Заполните имя и фамилию"; err.classList.add("show"); return; }
+  if(!rank){ err.textContent = "Выберите звание"; err.classList.add("show"); return; }
+  if(pwd.length < 4){ err.textContent = "Пароль минимум 4 символа"; err.classList.add("show"); return; }
+  var fullName = first + " " + last;
+  if(Object.values(STAFF).some(function(s){ return s.name.toLowerCase() === fullName.toLowerCase(); })){ err.textContent = "Такое ФИО уже есть"; err.classList.add("show"); return; }
+
+  var fileInput = document.getElementById("regScreenshot");
+  var file = fileInput.files && fileInput.files[0];
+
+  async function saveRequest(fileData){
+    var nameCheck = FSBValidate.name(first) && FSBValidate.name(last);
+    if(!nameCheck){
+      err.textContent = "Имя и фамилия — только буквы";
+      err.classList.add("show"); return;
+    }
+    var pwdHash = await FSBHash.hash(pwd);
+    registerRequests.push({
+      id:"REQ-"+Date.now(),
+      first:first, last:last, name:fullName, rank:rank,
+      pwdHash:pwdHash,
+      screenshot:fileData||null,
+      date:new Date().toLocaleString("ru-RU"),
+      status:"pending"
+    });
+    logAction("Новая заявка: " + fullName, "info");
+    saveAll();
+    document.getElementById("regFirst").value = "";
+    document.getElementById("regLast").value  = "";
+    document.getElementById("regRank").value  = "";
+    document.getElementById("regPass").value  = "";
+    document.getElementById("regScreenshot").value = "";
+    ok.textContent = "Заявка отправлена. Ожидайте рассмотрения.";
+    ok.classList.add("show");
+    updateReqBadge();
+    setTimeout(function(){ok.classList.remove("show");},4500);
+  }
+
+  if(file){
+    var reader = new FileReader();
+    reader.onload = function(ev){ saveRequest(ev.target.result); };
+    reader.readAsDataURL(file);
+  } else {
+    saveRequest(null);
+  }
+};
+
+/* ============ ИНИЦИАЛИЗАЦИЯ ============ */
+var appInited = false;
+function initApp(){
+  if(appInited) return; appInited = true;
+  document.getElementById("sbName").textContent = currentUser.name;
+  document.getElementById("sbRole").textContent = currentUser.rank + (currentUser.fullAccess ? " • Полный доступ" : "");
+  document.getElementById("sbAvatar").textContent = initials(currentUser.name);
+  if(canReviewRequests()) document.getElementById("navRequests").style.display = "flex";
+  if(currentUser.fullAccess) document.getElementById("navAdmin").style.display = "flex";
+  if(canPublishNews()) document.getElementById("btnAddNews").style.display = "inline-block";
+  startClock(); buildHomeFilters(); buildQuickAccess(); buildStaff(); buildStructure();
+  buildChecks(); buildDossier(); buildPremiums(); buildAnalytics(); buildRequests();
+  buildUsersList(); buildPoolAdmin(); buildCalendar(new Date()); buildLaw();
+  buildNews(); bindNewsEditor();
+  bindSidebar(); bindModals(); bindAdmin(); bindContacts(); bindInsModal(); bindNewsModal();
+  bindTopbar(); updateReqBadge(); updateNewsBadge();
+  /* Запускаем опрос сервера, если он доступен */
+  FSBApi.startPolling(function(newState){
+    try {
+      if(newState.STAFF)            STAFF = newState.STAFF;
+      if(newState.registerRequests) registerRequests = newState.registerRequests;
+      if(newState.calEvents)        calEvents = newState.calEvents;
+      if(newState.systemLogs)       systemLogs = newState.systemLogs;
+      if(newState.premiumPool)      premiumPool = newState.premiumPool;
+      if(newState.inspections)      inspections = newState.inspections;
+      if(newState.news)             news = newState.news;
+      if(currentUser && STAFF[currentUser.id]) currentUser = STAFF[currentUser.id];
+      refreshAll();
+    } catch(e){ console.error(e); }
+  });
+}
+function updateReqBadge(){
+  var cnt = registerRequests.filter(function(r){return r.status==="pending";}).length;
+  var b = document.getElementById("reqBadge");
+  if(!b) return;
+  if(cnt > 0){ b.style.display = "inline-block"; b.textContent = cnt; } else b.style.display = "none";
+}
+function updateNewsBadge(){
+  var readIds = JSON.parse(localStorage.getItem("fsb_read_news") || "[]");
+  var unread = news.filter(function(n){ return readIds.indexOf(n.id) === -1; }).length;
+  var b = document.getElementById("newsBadge");
+  var dot = document.getElementById("tbNewsDot");
+  if(b){ if(unread > 0){ b.style.display = "inline-block"; b.textContent = unread; } else b.style.display = "none"; }
+  if(dot){ dot.style.display = unread > 0 ? "block" : "none"; }
+}
+function startClock(){
+  var el = document.getElementById("clock");
+  function tick(){
+    var now = new Date();
+    var msk = now.toLocaleTimeString("ru-RU", {timeZone:"Europe/Moscow", hour:"2-digit", minute:"2-digit", second:"2-digit"});
+    var d = now.toLocaleDateString("ru-RU", {timeZone:"Europe/Moscow", day:"2-digit", month:"2-digit", year:"numeric"});
+    el.innerHTML = '<b>'+msk+'</b><small>'+d+' МСК</small>';
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+/* ============ КАРТОЧКИ ============ */
+function personCard(p, opts){
+  opts = opts || {};
+  var div = document.createElement("div");
+  div.className = "person" + (opts.head ? " head-person" : "");
+  if(!p){
+    div.className = "person vacant";
+    div.innerHTML = '<div class="p-photo"><div class="pvac">?</div></div><div class="p-info"><div class="p-name">Вакантно</div><div class="p-rank">Вакансия</div><div class="p-post">'+esc(opts.post||"")+'</div></div>';
+    return div;
+  }
+  var displayPost = shortPostFor(p);
+  div.innerHTML = '<div class="p-photo"><img src="'+esc(p.img||"")+'" alt="" onerror="this.parentNode.innerHTML=\'<div class=&quot;pinit&quot;>'+initials(p.name)+'</div>\'"></div><div class="p-info"><div class="p-name">'+esc(p.name)+'</div><div class="p-rank">'+esc(p.rank)+(p.fullAccess?' • ★':'')+'</div><div class="p-post">'+esc(displayPost)+'</div></div>';
+  div.addEventListener("click", function(){ openPerson(p); });
+  return div;
+}
+
+/* ============ МОДАЛКА СОТРУДНИКА ============ */
+function openPerson(p){
+  if(!p) return;
+  var body = document.getElementById("personModalBody");
+  var st = calcService(p.since || "2023-01-01");
+  var status = p.status === "fired" ? '<span class="status-pill fired">Уволен</span>' : p.status === "warn" ? '<span class="status-pill warn">Взыскание</span>' : '<span class="status-pill active">В службе</span>';
+  var onlineHtml = isOnline(p) ? '<span class="online-dot on"></span>онлайн' : '<span class="online-dot"></span>' + fmtLastSeen(p);
+  var warningsList = (p.warnings && p.warnings.length) ? p.warnings.map(function(w,i){ return '<div class="log-item warn"><div class="li-time">'+esc(w.date)+'</div><div class="li-text"><b>Предупреждение</b> — '+esc(w.text||"")+' '+(canManagePerson(p) ? '<button data-rm-warn="'+i+'" style="float:right;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#a0f0b0;padding:2px 8px;border-radius:4px;font-size:10px;cursor:pointer;">Снять</button>' : '')+'</div></div>'; }).join("") : '<div class="empty" style="padding:14px;font-size:12px;">Нет предупреждений</div>';
+  var reprimandsList = (p.reprimands && p.reprimands.length) ? p.reprimands.map(function(w,i){ return '<div class="log-item danger"><div class="li-time">'+esc(w.date)+'</div><div class="li-text"><b>Выговор</b> — '+esc(w.text||"")+' '+(canManagePerson(p) ? '<button data-rm-rep="'+i+'" style="float:right;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#a0f0b0;padding:2px 8px;border-radius:4px;font-size:10px;cursor:pointer;">Снять</button>' : '')+'</div></div>'; }).join("") : '<div class="empty" style="padding:14px;font-size:12px;">Нет выговоров</div>';
+  var logsList = (p.logs && p.logs.length) ? p.logs.map(function(l){ return '<div class="log-item"><div class="li-time">'+esc(l.date)+'</div><div class="li-text">'+esc(l.text)+'</div></div>'; }).join("") : '<div class="empty" style="padding:14px;font-size:12px;">Записей нет</div>';
+  var canManage = canManagePerson(p);
+  var canSee = canSeeActions();
+  var isSelf = p.id === currentUser.id;
+  var iAmFullAccess = currentUser.fullAccess;
+  var actionsHTML = "";
+  if(canSee){
+    var disabled = canManage ? "" : "disabled";
+    actionsHTML = '<div class="m-section-title">Действия</div><div class="action-grid">' +
+      '<button class="action-btn warn" '+disabled+' data-act="warn"><span class="ab-icon">⚠️</span><div class="ab-title">Предупреждение</div><div class="ab-sub">'+(p.warnings?.length||0)+'/3</div></button>' +
+      '<button class="action-btn danger" '+disabled+' data-act="reprimand"><span class="ab-icon">📕</span><div class="ab-title">Выговор</div><div class="ab-sub">'+(p.reprimands?.length||0)+'/2</div></button>' +
+      '<button class="action-btn danger" '+disabled+' data-act="fire"><span class="ab-icon">🚫</span><div class="ab-title">Уволить</div></button>' +
+      '<button class="action-btn blue" '+(canManage && RANK_INDEX[p.rank] > 0 ? "" : "disabled")+' data-act="demote"><span class="ab-icon">↓</span><div class="ab-title">Понизить</div></button>' +
+      '<button class="action-btn gold" '+disabled+' data-act="promote"><span class="ab-icon">↑</span><div class="ab-title">Повысить</div></button>' +
+      '<button class="action-btn gold" '+(iAmFullAccess ? "" : "disabled")+' data-act="bonus"><span class="ab-icon">★</span><div class="ab-title">Премировать</div></button>' +
+      (iAmFullAccess ? ('<button class="action-btn violet" data-act="assign"><span class="ab-icon">🏛</span><div class="ab-title">Назначить</div></button>' +
+        '<button class="action-btn danger" data-act="unassign"><span class="ab-icon">⚊</span><div class="ab-title">Снять с должности</div></button>' +
+        (isSelf ? '<button class="action-btn violet" disabled><span class="ab-icon">★</span><div class="ab-title">Полный доступ</div><div class="ab-sub">С себя нельзя</div></button>' : '<button class="action-btn violet" data-act="toggleFull"><span class="ab-icon">★</span><div class="ab-title">'+(p.fullAccess ? "Снять полный доступ" : "Дать полный доступ")+'</div></button>') +
+        '<button class="action-btn blue" data-act="editUser"><span class="ab-icon">✎</span><div class="ab-title">Редактировать</div></button>') : '') +
+      (isSelf ? '<button class="action-btn green" data-act="changePwd"><span class="ab-icon">🔒</span><div class="ab-title">Сменить пароль</div></button>' : '') +
+      '</div>';
+  } else {
+    actionsHTML = '<div style="margin-top:20px;padding:14px;background:rgba(110,179,255,.06);border:1px solid rgba(110,179,255,.25);border-radius:6px;font-size:11.5px;color:#8ec4ff;text-align:center;">Просмотр личного дела. Управление — от подполковника.</div>';
+  }
+  body.innerHTML = '<div class="modal-head"><div class="m-photo"><img src="'+esc(p.img||"")+'" alt="" onerror="this.parentNode.innerHTML=\'<div class=&quot;pinit&quot;>'+initials(p.name)+'</div>\'"></div><div class="m-info"><h3>'+esc(p.name)+'</h3><div class="m-rank">'+esc(p.rank)+(p.fullAccess ? ' • ПОЛНЫЙ ДОСТУП' : '')+'</div><div class="m-post">'+esc(p.post||"—")+'</div><div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">'+status+' <span style="font-size:11px;color:var(--muted);">'+onlineHtml+'</span></div></div></div>' +
+    '<div class="m-meta">' +
+      '<div class="m-meta-item"><div class="mm-label">Подразделение</div><div class="mm-value">'+esc(p.dept||"—")+'</div></div>' +
+      '<div class="m-meta-item"><div class="mm-label">В службе</div><div class="mm-value green">'+st.days+' дн.</div></div>' +
+      '<div class="m-meta-item"><div class="mm-label">Стаж</div><div class="mm-value">'+st.years+' г. '+st.months+' мес.</div></div>' +
+      '<div class="m-meta-item"><div class="mm-label">Оклад</div><div class="mm-value gold">'+fmt(p.salary)+' ₽</div></div>' +
+      '<div class="m-meta-item"><div class="mm-label">Предупреждений</div><div class="mm-value red">'+(p.warnings||[]).length+' / 3</div></div>' +
+      '<div class="m-meta-item"><div class="mm-label">Выговоров</div><div class="mm-value red">'+(p.reprimands||[]).length+' / 2</div></div>' +
+      '<div class="m-meta-item"><div class="mm-label">Дата вступления</div><div class="mm-value">'+esc(p.since||"—")+'</div></div>' +
+      '<div class="m-meta-item"><div class="mm-label">Последний онлайн</div><div class="mm-value">'+fmtLastSeen(p)+'</div></div>' +
+    '</div>' + actionsHTML +
+    '<div class="m-section-title">Предупреждения</div><div>'+warningsList+'</div>' +
+    '<div class="m-section-title">Выговоры</div><div>'+reprimandsList+'</div>' +
+    '<div class="m-section-title">История</div><div>'+logsList+'</div>';
+  body.querySelectorAll("[data-act]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var a = btn.dataset.act;
+      if(a === "promote") openRankSelect(p, "up");
+      else if(a === "demote") openRankSelect(p, "down");
+      else if(a === "warn") actionWarn(p);
+      else if(a === "reprimand") actionReprimand(p);
+      else if(a === "fire") actionFire(p);
+      else if(a === "bonus") actionBonus(p);
+      else if(a === "assign") openPositionSelect(p);
+      else if(a === "unassign") actionUnassign(p);
+      else if(a === "toggleFull") actionToggleFull(p);
+      else if(a === "editUser") openEditPerson(p);
+      else if(a === "changePwd") openPwdChange(p);
+    });
+  });
+  body.querySelectorAll("[data-rm-warn]").forEach(function(b){ b.addEventListener("click", function(e){ e.stopPropagation(); removeWarn(p, +b.dataset.rmWarn); }); });
+  body.querySelectorAll("[data-rm-rep]").forEach(function(b){ b.addEventListener("click", function(e){ e.stopPropagation(); removeReprimand(p, +b.dataset.rmRep); }); });
+  document.getElementById("personModal").classList.add("active");
+}
+
+/* ============ ВЫБОР ЗВАНИЯ ============ */
+function openRankSelect(target, mode){
+  document.getElementById("rankModalTitle").textContent = mode === "up" ? "Повышение" : "Понижение";
+  document.getElementById("rankModalSub").innerHTML = 'Сотрудник: <b style="color:#fff;">'+esc(target.name)+'</b><br>Текущее: <b style="color:var(--gold-2);">'+esc(target.rank)+'</b>';
+  var list = document.getElementById("ranksList");
+  var curIdx = RANK_INDEX[target.rank];
+  list.innerHTML = "";
+  RANKS.forEach(function(rank, i){
+    var allowed = false;
+    if(mode === "up") allowed = i > curIdx;
+    if(mode === "down") allowed = i < curIdx;
+    if(!currentUser.fullAccess && i >= RANK_INDEX["Генерал-майор"]) allowed = false;
+    var item = document.createElement("div");
+    item.className = "rank-item" + (i === curIdx ? " current" : "");
+    item.innerHTML = '<div class="ri-pos">'+(i+1)+'</div><div class="ri-name">'+esc(rank)+'</div>' + (i === curIdx ? '<span class="ri-badge cur">Текущее</span>' : (allowed ? '<span class="ri-badge '+(mode==='up'?'up':'down')+'">'+(mode==='up'?'↑':'↓')+'</span>' : ''));
+    if(allowed){ item.addEventListener("click", function(){ document.getElementById("rankModal").classList.remove("active"); doChangeRank(target, rank, mode); }); }
+    else if(i !== curIdx){ item.style.opacity = "0.35"; item.style.cursor = "not-allowed"; }
+    else item.style.cursor = "default";
+    list.appendChild(item);
+  });
+  document.getElementById("rankModal").classList.add("active");
+}
+
+function openPositionSelect(target){
+  document.getElementById("posModalSub").innerHTML = 'Сотрудник: <b style="color:#fff;">'+esc(target.name)+'</b>';
+  var cont = document.getElementById("posList");
+  cont.innerHTML = "";
+  var groups = {};
+  Object.keys(POSITIONS).forEach(function(pid){
+    if(pid === "employee") return;
+    var p = POSITIONS[pid];
+    if(p.serviceOnly) return;
+    if(!groups[p.group]) groups[p.group] = [];
+    groups[p.group].push({id:pid, name:p.name, minRank:p.minRank, multiple:p.multiple});
+  });
+  Object.keys(groups).forEach(function(g){
+    var block = document.createElement("div");
+    block.className = "pos-group";
+    block.innerHTML = '<div class="pos-group-title">'+esc(g)+'</div>';
+    groups[g].forEach(function(pos){ addPositionItem(block, pos, target); });
+    cont.appendChild(block);
+  });
+  var servicesBlock = document.createElement("div");
+  servicesBlock.className = "pos-group";
+  servicesBlock.innerHTML = '<div class="pos-group-title">Службы</div>';
+  Object.keys(POSITIONS).filter(function(pid){ return POSITIONS[pid].serviceOnly; }).forEach(function(pid){
+    addPositionItem(servicesBlock, {id:pid, name:POSITIONS[pid].name, minRank:POSITIONS[pid].minRank}, target);
+  });
+  cont.appendChild(servicesBlock);
+  document.getElementById("posModal").classList.add("active");
+}
+function addPositionItem(block, pos, target){
+  var occupied = (POSITIONS[pos.id] && POSITIONS[pos.id].multiple) ? [] : getStaffByPosition(pos.id).filter(function(s){ return s.id !== target.id; });
+  var occupiedBy = occupied[0];
+  var canAssign = RANK_INDEX[target.rank] >= RANK_INDEX[pos.minRank];
+  var item = document.createElement("div");
+  item.className = "pos-item" + (occupied.length ? " occupied" : "");
+  item.innerHTML = '<div style="font-weight:600;">'+esc(pos.name)+'</div><div class="pos-min">Мин: '+esc(pos.minRank)+(occupiedBy ? " • Занято: "+esc(occupiedBy.name) : "")+(canAssign ? "" : " • Ниже званием")+(POSITIONS[pos.id] && POSITIONS[pos.id].multiple ? " • Мульти" : "")+'</div>';
+  if(!occupied.length && canAssign){
+    item.addEventListener("click", function(){ document.getElementById("posModal").classList.remove("active"); doAssignPosition(target, pos.id); });
+  }
+  block.appendChild(item);
+}
+
+/* ============ ДЕЙСТВИЯ ============ */
+function doChangeRank(target, newRank, mode){
+  var old = target.rank;
+  target.rank = newRank;
+  target.salary = RANK_SALARIES[newRank] || target.salary;
+  pushToPerson(target, (mode==='up'?'Повышение':'Понижение')+': '+old+' → '+newRank);
+  logAction(currentUser.name+' '+(mode==='up'?'повысил':'понизил')+' '+target.name+': '+old+' → '+newRank, mode==='up'?'gold':'warn');
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll(); setTimeout(function(){ openPerson(target); }, 100);
+}
+function doAssignPosition(target, posId){
+  var pos = POSITIONS[posId];
+  target.positionId = posId;
+  target.post = pos.name;
+  target.dept = pos.group;
+  pushToPerson(target, 'Назначение: '+pos.name);
+  logAction(currentUser.name+' назначил '+target.name+' на '+pos.name);
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll();
+}
+function actionUnassign(target){
+  document.getElementById("confirmTitle").textContent = "Снять с должности";
+  document.getElementById("confirmText").innerHTML = 'Снять <b>'+esc(target.name)+'</b> с должности?';
+  document.getElementById("confirmYes").onclick = function(){
+    target.positionId = "employee"; target.post = POSITIONS["employee"].name; target.dept = "Кадровый резерв";
+    pushToPerson(target, "Снят с должности");
+    logAction(currentUser.name+" снял "+target.name+" с должности", "warn");
+    document.getElementById("confirmModal").classList.remove("active");
+    document.getElementById("personModal").classList.remove("active");
+    refreshAll();
+  };
+  document.getElementById("confirmModal").classList.add("active");
+}
+function actionToggleFull(target){
+  if(target.id === currentUser.id) return;
+  target.fullAccess = !target.fullAccess;
+  logAction(currentUser.name+' '+(target.fullAccess?'выдал':'снял')+' полный доступ '+target.name);
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll();
+}
+function actionWarn(p){
+  if(!p.warnings) p.warnings = [];
+  p.warnings.push({date:new Date().toLocaleString("ru-RU"), text:currentUser.name});
+  logAction(currentUser.name+' → предупреждение '+p.name, "warn");
+  if(p.warnings.length >= 3){
+    p.warnings = [];
+    if(!p.reprimands) p.reprimands = [];
+    p.reprimands.push({date:new Date().toLocaleString("ru-RU"), text:"Авто: 3 предупреждения"});
+    logAction("⚠ "+p.name+" автовыговор", "danger");
+    if(p.reprimands.length >= 2) autoFire(p);
+  }
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll(); setTimeout(function(){ openPerson(p); }, 100);
+}
+function actionReprimand(p){
+  if(!p.reprimands) p.reprimands = [];
+  p.reprimands.push({date:new Date().toLocaleString("ru-RU"), text:currentUser.name});
+  logAction(currentUser.name+' → выговор '+p.name, "danger");
+  if(p.reprimands.length >= 2) autoFire(p);
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll(); setTimeout(function(){ openPerson(p); }, 100);
+}
+function autoFire(p){
+  p.status = "fired"; p.fullAccess = false; p.positionId = "employee";
+  logAction("⚠ "+p.name+" автоматически уволен", "danger");
+}
+function removeWarn(p, idx){
+  if(!p.warnings) return;
+  p.warnings.splice(idx,1);
+  logAction(currentUser.name+' снял предупреждение с '+p.name, "info");
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll(); setTimeout(function(){ openPerson(p); }, 100);
+}
+function removeReprimand(p, idx){
+  if(!p.reprimands) return;
+  p.reprimands.splice(idx,1);
+  logAction(currentUser.name+' снял выговор с '+p.name, "info");
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll(); setTimeout(function(){ openPerson(p); }, 100);
+}
+function actionFire(p){
+  document.getElementById("confirmTitle").textContent = "Увольнение";
+  document.getElementById("confirmText").innerHTML = 'Уволить <b>'+esc(p.name)+'</b>?';
+  document.getElementById("confirmYes").onclick = function(){
+    p.status = "fired"; p.fullAccess = false; p.positionId = "employee";
+    logAction(currentUser.name+' уволил '+p.name, "danger");
+    document.getElementById("confirmModal").classList.remove("active");
+    document.getElementById("personModal").classList.remove("active");
+    refreshAll();
+  };
+  document.getElementById("confirmModal").classList.add("active");
+}
+function actionBonus(p){
+  if(premiumPool.balance <= 0){ alert("Пул пуст"); return; }
+  var sum = prompt("Премия для "+p.name+"\nДоступно: "+fmt(premiumPool.balance)+" ₽\nСумма:", "5000");
+  if(!sum) return;
+  var amount = parseInt(sum);
+  if(!amount || amount <= 0){ alert("Некорректная сумма"); return; }
+  if(amount > premiumPool.balance){ alert("Недостаточно средств"); return; }
+  premiumPool.balance -= amount;
+  premiumPool.logs.unshift({date:new Date().toLocaleString("ru-RU"), userId:p.id, userName:p.name, userRank:p.rank, amount:amount, note:"Премировал "+currentUser.name});
+  pushToPerson(p, "Премия "+fmt(amount)+" ₽");
+  logAction(currentUser.name+' премировал '+p.name+' на '+fmt(amount)+' ₽');
+  document.getElementById("personModal").classList.remove("active");
+  refreshAll();
+}
+function openPwdChange(p){
+  document.getElementById("pwdOld").value = ""; document.getElementById("pwdNew").value = ""; document.getElementById("pwdNew2").value = "";
+  document.getElementById("pwdErr").classList.remove("show");
+  document.getElementById("pwdSave").onclick = async function(){
+    var o  = document.getElementById("pwdOld").value;
+    var n  = document.getElementById("pwdNew").value;
+    var n2 = document.getElementById("pwdNew2").value;
+    var err = document.getElementById("pwdErr");
+    err.classList.remove("show");
+
+    var oldHash = await FSBHash.hash(o);
+    if(oldHash !== (p.pwdHash||'')){ err.textContent = "Текущий пароль неверный"; err.classList.add("show"); return; }
+
+    var cleanNew = FSBValidate.pwd(n);
+    if(!cleanNew){ err.textContent = "Новый пароль минимум 4 символа"; err.classList.add("show"); return; }
+    if(n !== n2){ err.textContent = "Пароли не совпадают"; err.classList.add("show"); return; }
+
+    p.pwdHash = await FSBHash.hash(n);
+    logAction(p.name+" сменил пароль", "info");
+    saveAll();
+    document.getElementById("pwdModal").classList.remove("active");
+    document.getElementById("personModal").classList.remove("active");
+    alert("Пароль изменён");
+  };
+  document.getElementById("pwdModal").classList.add("active");
+}
+
+/* ============ ПЕРЕСТРОЙКА ============ */
+function refreshAll(){
+  ["gridChief","gridDeputies","gridAssistants","gridHeads","gridDeps","dossierBody","premiumsContainer","structureContainer","usersList","homeFilters","poolAdminContent","checksFeed","analyticsFeed","analyticsStats","newsFeed"].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.innerHTML = "";
+  });
+  var db = document.getElementById("deputiesBlock"); if(db) db.style.display = "";
+  var ab = document.getElementById("assistantsBlock"); if(ab) ab.style.display = "";
+  buildHomeFilters(); buildStaff(); buildStructure(); buildChecks(); buildDossier(); buildPremiums();
+  buildAnalytics(); buildPoolAdmin(); buildUsersList(); buildNews();
+  if(document.getElementById("logsList")) renderLogs();
+  updateReqBadge(); updateNewsBadge();
+}
+
+/* ============ РУКОВОДСТВО ============ */
+function buildStaff(){
+  var chief = Object.values(STAFF).find(function(s){ return s.positionId === "chief_ru" && s.status !== "fired"; });
+  document.getElementById("gridChief").appendChild(personCard(chief, {head:true}));
+  LEADERSHIP_DEPUTY_POSITIONS.forEach(function(pid){
+    var list = getStaffByPosition(pid);
+    list.forEach(function(p){ document.getElementById("gridDeputies").appendChild(personCard(p,{head:true})); });
+  });
+  var depGrid = document.getElementById("gridDeputies");
+  var depBlock = document.getElementById("deputiesBlock");
+  depBlock.style.display = depGrid.children.length === 0 ? "none" : "";
+  LEADERSHIP_ASSISTANT_POSITIONS.forEach(function(pid){
+    var list = getStaffByPosition(pid);
+    list.forEach(function(p){ document.getElementById("gridAssistants").appendChild(personCard(p)); });
+  });
+  var assGrid = document.getElementById("gridAssistants");
+  var assBlock = document.getElementById("assistantsBlock");
+  assBlock.style.display = assGrid.children.length === 0 ? "none" : "";
+  DEPARTMENTS.forEach(function(dep){
+    var list = getStaffByPosition(dep.headPos);
+    if(list.length) list.forEach(function(p){ document.getElementById("gridHeads").appendChild(personCard(p,{head:true})); });
+    else document.getElementById("gridHeads").appendChild(personCard(null,{post:getPositionName(dep.headPos)}));
+  });
+  DEPARTMENTS.forEach(function(dep){
+    dep.positions.forEach(function(pid){
+      if(pid === dep.headPos) return;
+      var list = getStaffByPosition(pid);
+      if(list.length) list.forEach(function(p){ document.getElementById("gridDeps").appendChild(personCard(p)); });
+      else document.getElementById("gridDeps").appendChild(personCard(null,{post:getPositionName(pid)}));
+    });
+  });
+}
+
+function buildStructure(){
+  var cont = document.getElementById("structureContainer");
+  cont.innerHTML = "";
+  DEPARTMENTS.forEach(function(dep){
+    var block = document.createElement("div");
+    block.style.marginBottom = "42px";
+    block.innerHTML = '<h2 class="sec-title">Служба № '+dep.id+' • '+esc(dep.badge)+'</h2><div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px;">'+esc(dep.title)+'</div><div style="font-size:12px;color:var(--muted);margin-bottom:16px;">'+esc(dep.sub)+'</div><div style="background:linear-gradient(90deg,rgba(15,32,56,.6) 0%,rgba(10,22,40,.8) 100%);border:1px solid var(--line);border-left:3px solid var(--gold);padding:18px 22px;margin-bottom:22px;font-size:13px;color:#c6d2e4;line-height:1.7;border-radius:0 8px 8px 0;">'+esc(dep.desc)+'</div><div class="staff-grid" id="dept-'+dep.id+'"></div>';
+    cont.appendChild(block);
+    var grid = block.querySelector("#dept-"+dep.id);
+    dep.positions.forEach(function(pid){
+      var list = getStaffByPosition(pid);
+      if(list.length) list.forEach(function(p){ grid.appendChild(personCard(p,{head: pid === dep.headPos})); });
+      else grid.appendChild(personCard(null,{post:getPositionName(pid)}));
+    });
+  });
+}
+
+/* ============ ИНСПЕКЦИИ ============ */
+function resultColor(r){
+  if(r === "Успешно") return {bg:"rgba(74,222,128,.12)",border:"rgba(74,222,128,.35)",color:"#a0f0b0"};
+  if(r === "Провалена") return {bg:"rgba(224,84,84,.12)",border:"rgba(224,84,84,.35)",color:"#f0a0a0"};
+  return {bg:"rgba(201,162,39,.12)",border:"rgba(201,162,39,.35)",color:"var(--gold-2)"};
+}
+function buildChecks(){
+  var cont = document.getElementById("checksFeed");
+  if(!cont) return;
+  cont.innerHTML = "";
+  var btnAdd = document.getElementById("btnAddInspection");
+  if(btnAdd) btnAdd.style.display = (currentUser && currentUser.fullAccess) ? "inline-block" : "none";
+  if(!inspections.length){ cont.innerHTML = '<div class="empty">Инспекций нет</div>'; return; }
+  inspections.forEach(function(item){
+    var rc = resultColor(item.result);
+    var el = document.createElement("div");
+    el.className = "ins-card";
+    el.style.cursor = "pointer";
+    el.innerHTML = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;"><span style="font-family:Consolas,monospace;font-size:12.5px;color:var(--gold-2);font-weight:600;">'+esc(item.id)+'</span><span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:3px 11px;border-radius:11px;background:rgba(110,179,255,.12);color:var(--blue);border:1px solid rgba(110,179,255,.3);">'+esc(item.status)+'</span><span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:3px 11px;border-radius:11px;background:'+rc.bg+';color:'+rc.color+';border:1px solid '+rc.border+';margin-left:auto;">'+esc(item.result)+'</span></div>' +
+      '<div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px;">'+esc(item.title)+'</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:14px;"><div><div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Организация</div><div style="font-size:12.5px;color:#c6d2e4;">'+esc(item.org)+'</div></div><div><div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Средний балл</div><div style="font-size:13.5px;color:var(--gold-2);font-weight:700;font-family:Consolas,monospace;">'+(item.score !== null && item.score !== undefined ? item.score + ' / 10' : '—')+'</div></div><div><div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Дата</div><div style="font-size:12.5px;color:#c6d2e4;">'+esc(item.date)+'</div></div></div>' +
+      '<div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Инспекторы</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;">'+ item.inspectors.map(function(n){return '<span style="font-size:11px;padding:3px 10px;border-radius:12px;background:rgba(201,162,39,.1);color:var(--gold-2);border:1px solid rgba(201,162,39,.25);">'+esc(n)+'</span>';}).join("") +'</div>' +
+      (currentUser && currentUser.fullAccess ? '<div style="margin-top:16px;text-align:right;"><button class="admin-btn red" style="font-size:10px;padding:6px 14px;" data-rm-ins="'+esc(item.id)+'">Удалить</button></div>' : '');
+    el.addEventListener("click", function(e){
+      if(e.target.dataset.rmIns) return;
+      if(currentUser && currentUser.fullAccess) openInsEdit(item);
+    });
+    el.querySelectorAll("[data-rm-ins]").forEach(function(b){
+      b.addEventListener("click", function(e){
+        e.stopPropagation();
+        if(!confirm("Удалить инспекцию "+item.id+"?")) return;
+        inspections = inspections.filter(function(x){return x.id !== item.id;});
+        logAction(currentUser.name+" удалил инспекцию "+item.id, "warn");
+        buildChecks();
+      });
+    });
+    cont.appendChild(el);
+  });
+}
+var insEditingId = null;
+var selectedInspectors = [];
+function renderInspectorsPicker(selected){
+  selectedInspectors = (selected || []).slice();
+  var box = document.getElementById("insInspectorsBox");
+  var tags = document.getElementById("insSelectedTags");
+  box.innerHTML = "";
+  Object.values(STAFF).filter(function(s){ return s.status !== "fired"; }).forEach(function(p){
+    var isSel = selectedInspectors.indexOf(p.name) !== -1;
+    var item = document.createElement("div");
+    item.style.cssText = "display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;cursor:pointer;transition:.2s;margin-bottom:4px;" + (isSel ? "background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.3);" : "border:1px solid transparent;");
+    item.innerHTML = '<input type="checkbox" '+(isSel?"checked":"")+' style="width:auto;cursor:pointer;"> <span style="font-size:12.5px;color:#fff;font-weight:500;">'+esc(p.name)+'</span> <span style="font-size:10px;color:var(--muted);margin-left:auto;">'+esc(p.rank)+'</span>';
+    item.addEventListener("click", function(e){
+      e.preventDefault();
+      var idx = selectedInspectors.indexOf(p.name);
+      if(idx === -1) selectedInspectors.push(p.name);
+      else selectedInspectors.splice(idx,1);
+      renderInspectorsPicker(selectedInspectors);
+    });
+    box.appendChild(item);
+  });
+  tags.innerHTML = selectedInspectors.map(function(n){ return '<span style="font-size:11px;padding:4px 11px;border-radius:12px;background:rgba(201,162,39,.12);color:var(--gold-2);border:1px solid rgba(201,162,39,.3);">'+esc(n)+'</span>'; }).join("");
+}
+function openInsEdit(item){
+  insEditingId = item.id;
+  document.getElementById("insModalTitle").textContent = "Редактирование инспекции " + item.id;
+  document.getElementById("insModalSub").textContent = "Обновите данные проверки";
+  document.getElementById("insTitle").value = item.title;
+  document.getElementById("insOrg").value = item.org;
+  document.getElementById("insStatus").value = item.status;
+  document.getElementById("insScore").value = item.score !== null && item.score !== undefined ? item.score : "";
+  document.getElementById("insResult").value = item.result;
+  renderInspectorsPicker(item.inspectors);
+  document.getElementById("insError").classList.remove("show");
+  document.getElementById("insModal").classList.add("active");
+}
+function openInsNew(){
+  insEditingId = null;
+  document.getElementById("insModalTitle").textContent = "Новая инспекция";
+  document.getElementById("insModalSub").textContent = "Заполните данные о проверке";
+  document.getElementById("insTitle").value = "";
+  document.getElementById("insOrg").value = "";
+  document.getElementById("insStatus").value = "Запланированная";
+  document.getElementById("insScore").value = "";
+  document.getElementById("insResult").value = "В работе";
+  renderInspectorsPicker([]);
+  document.getElementById("insError").classList.remove("show");
+  document.getElementById("insModal").classList.add("active");
+}
+function bindInsModal(){
+  var btn = document.getElementById("btnAddInspection");
+  if(btn) btn.onclick = openInsNew;
+  var saveBtn = document.getElementById("insSave");
+  if(saveBtn) saveBtn.onclick = function(){
+    var title = document.getElementById("insTitle").value.trim();
+    var org = document.getElementById("insOrg").value.trim();
+    var status = document.getElementById("insStatus").value;
+    var scoreRaw = document.getElementById("insScore").value;
+    var result = document.getElementById("insResult").value;
+    var errEl = document.getElementById("insError");
+    errEl.classList.remove("show");
+    if(!title){ errEl.textContent = "Введите название"; errEl.classList.add("show"); return; }
+    if(!org){ errEl.textContent = "Введите организацию"; errEl.classList.add("show"); return; }
+    if(!selectedInspectors.length){ errEl.textContent = "Выберите хотя бы одного инспектора"; errEl.classList.add("show"); return; }
+    var score = scoreRaw === "" ? null : parseFloat(scoreRaw);
+    if(score !== null && (isNaN(score) || score < 0 || score > 10)){ errEl.textContent = "Балл от 0 до 10"; errEl.classList.add("show"); return; }
+    if(insEditingId){
+      var ins = inspections.find(function(i){ return i.id === insEditingId; });
+      if(ins){ ins.title=title; ins.org=org; ins.status=status; ins.score=score; ins.result=result; ins.inspectors=selectedInspectors.slice(); logAction(currentUser.name+" обновил инспекцию "+ins.id); }
+    } else {
+      var num = inspections.length + 1;
+      var newId = "ИНС-" + String(num).padStart(3,"0");
+      while(inspections.some(function(x){return x.id === newId;})){ num++; newId = "ИНС-" + String(num).padStart(3,"0"); }
+      inspections.unshift({id:newId, title:title, org:org, inspectors:selectedInspectors.slice(), status:status, score:score, result:result, date:new Date().toLocaleDateString("ru-RU")});
+      logAction(currentUser.name+" добавил инспекцию "+newId);
+    }
+    document.getElementById("insModal").classList.remove("active");
+    buildChecks();
+  };
+}
+
+/* ============ ЛИЧНЫЕ ДЕЛА ============ */
+function buildDossier(){
+  var tbody = document.getElementById("dossierBody");
+  tbody.innerHTML = "";
+  Object.values(STAFF).filter(function(s){ return s.status !== "fired"; }).forEach(function(p,i){
+    var st = calcService(p.since || "2023-01-01");
+    var tr = document.createElement("tr");
+    var status = p.status === "warn" ? '<span class="status-pill warn">Взыскание</span>' : '<span class="status-pill active">В службе</span>';
+    var onlineHtml = isOnline(p) ? '<span class="online-dot on"></span>онлайн' : '<span class="online-dot"></span>' + fmtLastSeen(p);
+    tr.innerHTML = '<td style="color:#5a6b85;font-family:Consolas,monospace;">'+String(i+1).padStart(2,"0")+'</td><td class="name">'+esc(p.name)+(p.fullAccess ? ' <span style="color:var(--violet);font-size:11px;">★</span>' : '')+'</td><td class="rank-cell">'+esc(p.rank)+'</td><td style="font-size:12px;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+esc(p.post||"")+'">'+esc(shortPostFor(p))+'</td><td style="font-size:11px;color:var(--muted);">'+onlineHtml+'</td><td class="days">'+st.days+' дн.<span class="days-sub">'+st.years+' г. '+st.months+' мес.</span></td><td>'+status+'</td>';
+    tr.addEventListener("click", function(){ openPerson(p); });
+    tbody.appendChild(tr);
+  });
+}
+
+/* ============ ПРЕМИРОВАНИЕ ============ */
+function buildPremiums(){
+  var cont = document.getElementById("premiumsContainer");
+  var totalPremiums = premiumPool.logs.reduce(function(s,l){return s+l.amount;},0);
+  var totalFund = premiumPool.fundDates.reduce(function(s,f){return s+f.amount;},0);
+  var html = '<div class="pool-block"><h3>Финансовый пул премирования</h3><div class="pool-sub">Средства зачисляются полным доступом через панель управления. Премии выдаются из пула через личные дела сотрудников.</div><div class="pool-stats">' +
+    '<div class="pool-stat"><div class="ps-label">Текущий баланс</div><div class="ps-value gold">'+fmt(premiumPool.balance)+' ₽</div></div>' +
+    '<div class="pool-stat"><div class="ps-label">Всего зачислено</div><div class="ps-value green">'+fmt(totalFund)+' ₽</div></div>' +
+    '<div class="pool-stat"><div class="ps-label">Всего выплачено</div><div class="ps-value red">'+fmt(totalPremiums)+' ₽</div></div>' +
+    '</div></div>';
+  if(premiumPool.fundDates.length){
+    html += '<h2 class="sec-title">Зачисления в пул</h2>';
+    premiumPool.fundDates.forEach(function(f){ html += '<div class="premium-log"><div class="pl-date">'+esc(f.date)+'</div><div class="pl-text">Зачисление <b>'+fmt(f.amount)+' ₽</b> • '+esc(f.note||"—")+'</div></div>'; });
+  }
+  if(premiumPool.logs.length){
+    html += '<h2 class="sec-title">Выплаты сотрудникам</h2>';
+    premiumPool.logs.forEach(function(l){ html += '<div class="premium-log"><div class="pl-date">'+esc(l.date)+'</div><div class="pl-text"><b>'+esc(l.userName)+'</b> ('+esc(l.userRank)+') — '+esc(l.note)+'</div><div class="pl-amount">'+fmt(l.amount)+' ₽</div></div>'; });
+  } else {
+    html += '<h2 class="sec-title">Выплаты</h2><div class="empty">Выплат пока нет</div>';
+  }
+  cont.innerHTML = html;
+}
+function buildPoolAdmin(){
+  var cont = document.getElementById("poolAdminContent");
+  if(!cont) return;
+  if(!currentUser || !currentUser.fullAccess){ cont.innerHTML = "<div class='empty'>Только полный доступ</div>"; return; }
+  var totalPremiums = premiumPool.logs.reduce(function(s,l){return s+l.amount;},0);
+  var totalFund = premiumPool.fundDates.reduce(function(s,f){return s+f.amount;},0);
+  cont.innerHTML = '<div class="pool-block"><h3>Зачислить средства</h3><div class="admin-field"><label>Сумма (₽)</label><input type="number" id="poolAmount"></div><div class="admin-field"><label>Примечание</label><input type="text" id="poolNote"></div><button class="admin-btn" id="poolAdd">Зачислить</button></div>' +
+    '<div class="pool-block"><h3>Текущий баланс</h3><div class="pool-stats"><div class="pool-stat"><div class="ps-label">Доступно</div><div class="ps-value gold">'+fmt(premiumPool.balance)+' ₽</div></div><div class="pool-stat"><div class="ps-label">Всего зачислено</div><div class="ps-value green">'+fmt(totalFund)+' ₽</div></div><div class="pool-stat"><div class="ps-label">Всего выплачено</div><div class="ps-value red">'+fmt(totalPremiums)+' ₽</div></div></div><button class="admin-btn green" id="poolFinish" style="margin-top:16px;">Завершить премирование</button></div>' +
+    '<h2 class="sec-title">История зачислений</h2>' +
+    (premiumPool.fundDates.length ? premiumPool.fundDates.map(function(f){ return '<div class="premium-log"><div class="pl-date">'+esc(f.date)+'</div><div class="pl-text">'+esc(f.note||"—")+'</div><div class="pl-amount">+'+fmt(f.amount)+' ₽</div></div>'; }).join("") : '<div class="empty">Зачислений нет</div>');
+  var addBtn = document.getElementById("poolAdd");
+  if(addBtn) addBtn.onclick = function(){
+    var amount = parseInt(document.getElementById("poolAmount").value);
+    var note = document.getElementById("poolNote").value.trim();
+    if(!amount || amount <= 0){ alert("Введите сумму"); return; }
+    premiumPool.balance += amount;
+    premiumPool.fundDates.unshift({date:new Date().toLocaleString("ru-RU"), amount:amount, note:note||"Зачисление "+currentUser.name});
+    logAction(currentUser.name+" зачислил в пул "+fmt(amount)+" ₽");
+    document.getElementById("poolAmount").value = ""; document.getElementById("poolNote").value = "";
+    buildPoolAdmin(); buildPremiums();
+    alert("Зачислено "+fmt(amount)+" ₽");
+  };
+  var finBtn = document.getElementById("poolFinish");
+  if(finBtn) finBtn.onclick = function(){
+    var totalP = premiumPool.logs.reduce(function(s,l){return s+l.amount;},0);
+    alert("Завершение премирования\n\nВыплачено: "+fmt(totalP)+" ₽\nОстаток: "+fmt(premiumPool.balance)+" ₽");
+    logAction(currentUser.name+" завершил премирование");
+  };
+}
+
+/* ============ АНАЛИТИКА ============ */
+function buildAnalytics(){
+  var stats = document.getElementById("analyticsStats");
+  var feed = document.getElementById("analyticsFeed");
+  if(!stats || !feed) return;
+  var all = Object.values(STAFF).filter(function(s){ return s.status !== "fired"; });
+  var fired = Object.values(STAFF).filter(function(s){ return s.status === "fired"; }).length;
+  var warns = Object.values(STAFF).reduce(function(s,p){ return s + (p.warnings?.length||0) + (p.reprimands?.length||0); }, 0);
+  stats.innerHTML = '<div class="f-tile"><div class="f-num">'+all.length+'</div><div class="f-label">Сотрудников</div></div>' +
+    '<div class="f-tile"><div class="f-num">5</div><div class="f-label">Служб</div></div>' +
+    '<div class="f-tile"><div class="f-num" style="color:#f0a0a0;">'+fired+'</div><div class="f-label">Уволено</div></div>' +
+    '<div class="f-tile"><div class="f-num" style="color:var(--orange);">'+warns+'</div><div class="f-label">Взысканий</div></div>';
+  var maxCount = Math.max.apply(null, DEPARTMENTS.map(function(d){ return getDeptStaff(d).length; }).concat([1]));
+  DEPARTMENTS.forEach(function(d){
+    var deptStaff = getDeptStaff(d);
+    var count = deptStaff.length;
+    var pct = Math.round((count / maxCount) * 100);
+    var item = document.createElement("div");
+    item.className = "ins-card";
+    item.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span style="color:var(--gold-2);font-weight:700;font-size:13.5px;">Служба № '+d.id+' • '+esc(d.badge)+'</span><span style="font-size:12px;color:#fff;font-weight:600;padding:3px 10px;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.3);border-radius:11px;">'+count+' чел.</span></div><div style="font-size:12px;color:#b8c4d6;margin-bottom:12px;">'+esc(d.title)+'</div><div style="height:8px;background:#061020;border-radius:4px;overflow:hidden;margin-bottom:14px;"><div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-2) 100%);box-shadow:0 0 14px rgba(201,162,39,.6);"></div></div>' +
+      (count === 0 ? '<div style="font-size:11.5px;color:var(--muted);">Сотрудников нет</div>' : '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + deptStaff.map(function(p){ return '<span style="font-size:11px;padding:3px 10px;border-radius:11px;background:rgba(201,162,39,.08);color:var(--gold-2);border:1px solid rgba(201,162,39,.2);">'+esc(p.name)+'</span>'; }).join("") + '</div>');
+    feed.appendChild(item);
+  });
+}
+function getDeptStaff(d){
+  return Object.values(STAFF).filter(function(s){
+    if(s.status === "fired") return false;
+    if(d.positions.indexOf(s.positionId) !== -1) return true;
+    if(s.positionId === d.serviceCode) return true;
+    var sp = POSITIONS[s.positionId];
+    if(sp && sp.alsoPosition === d.headPos) return true;
+    return false;
+  });
+}
+
+/* ============ ЗАЯВКИ ============ */
+function buildRequests(){
+  var cont = document.getElementById("requestsContainer");
+  cont.innerHTML = "";
+  var pending = registerRequests.filter(function(r){ return r.status === "pending"; });
+  if(!pending.length){ cont.innerHTML = '<div class="empty">Нет активных заявок</div>'; return; }
+  pending.forEach(function(req){
+    var card = document.createElement("div");
+    card.className = "request-card";
+    var screenshotHtml = req.screenshot ? '<div class="r-screenshot"><img src="'+req.screenshot+'" onclick="window.open(this.src)"></div>' : '<div style="margin-top:14px;font-size:11px;color:var(--muted);">Скрин не приложен</div>';
+    card.innerHTML = '<div class="r-info"><div class="r-name">'+esc(req.first+" "+req.last)+'</div><span class="r-rank">'+esc(req.rank)+'</span><div class="r-meta"><div><b>Дата:</b> '+esc(req.date)+'</div></div>'+screenshotHtml+'</div><div class="r-actions"><button class="approve">Одобрить</button><button class="reject">Отказать</button></div>';
+    card.querySelector(".approve").addEventListener("click", function(){ approveRequest(req.id); });
+    card.querySelector(".reject").addEventListener("click", function(){ rejectRequest(req.id); });
+    cont.appendChild(card);
+  });
+}
+async function approveRequest(reqId){
+  var req = registerRequests.find(function(r){ return r.id === reqId; });
+  if(!req) return;
+  var id = "reg_" + Date.now();
+
+  /* Используем хеш пароля, который пользователь задал при регистрации */
+  var pwdHash = req.pwdHash;
+  /* На случай старых заявок без pwdHash — генерируем резервный */
+  var fallbackPwd = null;
+  if(!pwdHash){
+    fallbackPwd = FSBHash.generate(10);
+    pwdHash = await FSBHash.hash(fallbackPwd);
+  }
+
+  STAFF[id] = {
+    id:id,
+    name:req.first+" "+req.last,
+    rank:req.rank,
+    positionId:"employee",
+    post:POSITIONS["employee"].name,
+    img:"",
+    dept:"Кадровый резерв",
+    since:new Date().toISOString().slice(0,10),
+    salary:RANK_SALARIES[req.rank]||19000,
+    status:"active",
+    fullAccess:false,
+    warnings:[], reprimands:[], logs:[],
+    login:req.first+" "+req.last,
+    pwdHash:pwdHash,
+    lastSeen:null
+  };
+  req.status = "approved";
+  logAction(currentUser.name+" одобрил заявку "+req.first+" "+req.last);
+  saveAll();
+  refreshAll(); buildRequests();
+
+  if(fallbackPwd){
+    /* Только если не было pwdHash в заявке — показываем сгенерированный */
+    alert("Сотрудник принят.\n\nЛогин: "+req.first+" "+req.last+"\nПароль: "+fallbackPwd+"\n\n(Пароль сгенерирован автоматически — заявка не содержала своего.)");
+  } else {
+    alert("Сотрудник принят.\n\nЛогин: "+req.first+" "+req.last+"\nПароль: тот, который он указал при регистрации.");
+  }
+}function rejectRequest(reqId){
+  var req = registerRequests.find(function(r){ return r.id === reqId; });
+  if(!req) return;
+  req.status = "rejected";
+  logAction(currentUser.name+" отклонил заявку "+req.name, "warn");
+  saveAll();
+  buildRequests(); updateReqBadge();
+}
+
+/* ============ ПОЛЬЗОВАТЕЛИ ============ */
+function buildUsersList(){
+  var cont = document.getElementById("usersList");
+  if(!cont) return;
+  cont.innerHTML = "";
+  Object.values(STAFF).forEach(function(p){
+    var item = document.createElement("div");
+    item.className = "log-item";
+    item.style.cursor = "pointer";
+    item.innerHTML = '<div style="flex:1;"><div style="color:#fff;font-weight:600;font-size:13px;">'+esc(p.name)+(p.fullAccess ? ' <span style="color:var(--violet);font-size:11px;">★ Полный доступ</span>' : '')+'</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">'+esc(p.rank)+' • '+esc(shortPostFor(p))+' • '+(p.status==="fired"?'<span style="color:#f0a0a0;">Уволен</span>':'<span style="color:#4ade80;">Активен</span>')+'</div></div><button class="admin-btn" style="font-size:10px;padding:7px 14px;">Редактировать</button>';
+    item.querySelector("button").addEventListener("click", function(){ openEditPerson(p); });
+    cont.appendChild(item);
+  });
+}
+function openEditPerson(p){
+  var form = document.getElementById("editForm");
+  form.innerHTML = '<div class="admin-field full"><label>ФИО</label><input type="text" id="edName" value="'+esc(p.name)+'"></div>' +
+    '<div class="admin-field"><label>Звание</label><select id="edRank">'+RANKS.map(function(r){return '<option '+(r===p.rank?'selected':'')+'>'+esc(r)+'</option>';}).join("")+'</select></div>' +
+    '<div class="admin-field"><label>Дата вступления</label><input type="date" id="edSince" value="'+esc(p.since||"")+'"></div>' +
+    '<div class="admin-field"><label>Оклад (₽)</label><input type="number" id="edSalary" value="'+(p.salary||0)+'"></div>' +
+    '<div class="admin-field"><label>Статус</label><select id="edStatus"><option value="active" '+(p.status==="active"?"selected":"")+'>Активен</option><option value="warn" '+(p.status==="warn"?"selected":"")+'>С взысканием</option><option value="fired" '+(p.status==="fired"?"selected":"")+'>Уволен</option></select></div>' +
+    '<div class="admin-field"><label>Новый пароль (пусто = не менять)</label><input type="text" id="edPwd" value="" placeholder="Оставьте пустым, чтобы не менять"></div>' +
+    '<div class="admin-field full"><label>Должность</label><select id="edPos">'+Object.keys(POSITIONS).map(function(pid){return '<option value="'+pid+'" '+(p.positionId===pid?"selected":"")+'>'+esc(POSITIONS[pid].name)+'</option>';}).join("")+'</select></div>';
+  document.getElementById("editSave").onclick = async function(){
+    p.name  = document.getElementById("edName").value.trim() || p.name;
+    p.rank  = document.getElementById("edRank").value;
+    p.since = document.getElementById("edSince").value;
+    p.salary = parseInt(document.getElementById("edSalary").value) || 0;
+    p.status = document.getElementById("edStatus").value;
+
+    var newPwd = document.getElementById("edPwd").value;
+    if(newPwd){
+      var cleanNew = FSBValidate.pwd(newPwd);
+      if(!cleanNew){ alert("Пароль минимум 4 символа"); return; }
+      p.pwdHash = await FSBHash.hash(newPwd);
+    }
+
+    p.positionId = document.getElementById("edPos").value;
+    p.post = POSITIONS[p.positionId].name;
+    p.login = p.name;
+    logAction(currentUser.name+" отредактировал "+p.name);
+    saveAll();
+    document.getElementById("editModal").classList.remove("active");
+    refreshAll();
+  };
+  document.getElementById("editModal").classList.add("active");
+}
+
+/* ============ КАЛЕНДАРЬ ============ */
+var calDate = new Date();
+var MONTHS = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+var DOW = ["ПН","ВТ","СР","ЧТ","ПТ","СБ","ВС"];
+function buildCalendar(date){
+  calDate = date;
+  document.getElementById("calTitle").textContent = MONTHS[date.getMonth()] + " " + date.getFullYear() + " г.";
+  var grid = document.getElementById("calGrid");
+  grid.innerHTML = "";
+  DOW.forEach(function(d){ var el = document.createElement("div"); el.className = "cal-dow"; el.textContent = d; grid.appendChild(el); });
+  var year = date.getFullYear(), month = date.getMonth();
+  var first = new Date(year,month,1);
+  var startDow = first.getDay(); if(startDow === 0) startDow = 7;
+  var startOffset = startDow - 1;
+  var daysInMonth = new Date(year,month+1,0).getDate();
+  var today = new Date();
+  var isThisMonth = today.getFullYear() === year && today.getMonth() === month;
+  for(var i=startOffset-1;i>=0;i--){ var cell = document.createElement("div"); cell.className = "cal-cell out"; cell.textContent = "—"; grid.appendChild(cell); }
+  for(var d=1;d<=daysInMonth;d++){
+    (function(dd){
+      var cell = document.createElement("div"); cell.className = "cal-cell";
+      if(isThisMonth && today.getDate() === dd) cell.classList.add("today");
+      var key = year+"-"+String(month+1).padStart(2,"0")+"-"+String(dd).padStart(2,"0");
+      var evs = calEvents[key] || [];
+      cell.innerHTML = '<div class="cc-day">'+dd+'</div>' + evs.map(function(e){ return '<div class="cc-ev">'+esc(e.text)+'</div>'; }).join("");
+      cell.addEventListener("click", function(){
+        if(currentUser && currentUser.fullAccess){
+          var t = prompt("Событие на "+dd+"."+String(month+1).padStart(2,"0")+"."+year+":");
+          if(t && t.trim()){ if(!calEvents[key]) calEvents[key] = []; calEvents[key].push({text:t.trim()}); logAction(currentUser.name+" добавил событие"); buildCalendar(calDate); }
+        } else {
+          var evs2 = calEvents[key] || [];
+          alert("События:\n"+(evs2.length ? evs2.map(function(e){return "• "+e.text;}).join("\n") : "— пусто —"));
+        }
+      });
+      grid.appendChild(cell);
+    })(d);
+  }
+  var total = startOffset + daysInMonth;
+  var tail = (7 - total % 7) % 7;
+  for(var j=1;j<=tail;j++){ var c = document.createElement("div"); c.className = "cal-cell out"; c.textContent = "—"; grid.appendChild(c); }
+}
+document.getElementById("calPrev").onclick = function(){ buildCalendar(new Date(calDate.getFullYear(),calDate.getMonth()-1,1)); };
+document.getElementById("calNext").onclick = function(){ buildCalendar(new Date(calDate.getFullYear(),calDate.getMonth()+1,1)); };
+document.getElementById("calToday").onclick = function(){ buildCalendar(new Date()); };
+
+/* ============ НОВОСТИ ============ */
+function buildNews(){
+  var cont = document.getElementById("newsFeed");
+  if(!cont) return;
+  cont.innerHTML = "";
+  var btnAdd = document.getElementById("btnAddNews");
+  if(btnAdd) btnAdd.style.display = canPublishNews() ? "inline-block" : "none";
+
+  var readIds = JSON.parse(localStorage.getItem("fsb_read_news") || "[]");
+  var sorted = news.slice().sort(function(a,b){
+    if(a.pinned && !b.pinned) return -1;
+    if(b.pinned && !a.pinned) return 1;
+    return new Date(b.date.split(".").reverse().join("-")) - new Date(a.date.split(".").reverse().join("-"));
+  });
+
+  if(!sorted.length){ cont.innerHTML = '<div class="empty">Новостей нет</div>'; updateNewsBadge(); return; }
+
+  sorted.forEach(function(n){
+    var isUnread = readIds.indexOf(n.id) === -1;
+    var el = document.createElement("div");
+    el.className = "news-item" + (isUnread ? " unread" : "") + (n.pinned ? " pinned" : "");
+    el.innerHTML =
+      '<div class="news-head">' +
+        '<div class="news-avatar">'+esc(n.authorAvatar||initials(n.authorName||"?"))+'</div>' +
+        '<div class="news-meta"><div class="nm-name">'+esc(n.authorName||"Система")+'</div><div class="nm-rank">'+esc(n.authorRank||"")+(n.pinned ? ' • <span style="color:var(--violet);">Закреплено</span>' : '')+'</div><div class="nm-time">'+esc(n.date)+'</div></div>' +
+        (isUnread ? '<div class="news-unread-dot" title="Непрочитано"></div>' : '') +
+      '</div>' +
+      '<div class="news-title">'+esc(n.title)+'</div>' +
+      '<div class="news-content">'+n.content+'</div>' +
+      (canPublishNews() ? '<div class="news-actions"><button class="pin" data-pin="'+n.id+'">'+(n.pinned?"Открепить":"Закрепить")+'</button><button class="del" data-del="'+n.id+'">Удалить</button></div>' : '');
+
+    el.addEventListener("click", function(e){
+      if(e.target.dataset.pin || e.target.dataset.del) return;
+      var reads = JSON.parse(localStorage.getItem("fsb_read_news") || "[]");
+      if(reads.indexOf(n.id) === -1){
+        reads.push(n.id);
+        localStorage.setItem("fsb_read_news", JSON.stringify(reads));
+        el.classList.remove("unread");
+        var dot = el.querySelector(".news-unread-dot");
+        if(dot) dot.remove();
+        updateNewsBadge();
+      }
+    });
+
+    el.querySelectorAll("[data-pin]").forEach(function(b){
+      b.addEventListener("click", function(e){
+        e.stopPropagation();
+        var nn = news.find(function(x){return x.id === b.dataset.pin;});
+        if(nn){ nn.pinned = !nn.pinned; logAction(currentUser.name+(nn.pinned?" закрепил ":" открепил ")+nn.id); buildNews(); }
+      });
+    });
+    el.querySelectorAll("[data-del]").forEach(function(b){
+      b.addEventListener("click", function(e){
+        e.stopPropagation();
+        if(!confirm("Удалить новость?")) return;
+        news = news.filter(function(x){return x.id !== b.dataset.del;});
+        logAction(currentUser.name+" удалил новость "+b.dataset.del, "warn");
+        buildNews(); updateNewsBadge();
+      });
+    });
+    cont.appendChild(el);
+  });
+  updateNewsBadge();
+}
+
+function bindNewsEditor(){
+  document.querySelectorAll(".news-tb-btn[data-cmd]").forEach(function(b){
+    b.addEventListener("click", function(e){
+      e.preventDefault();
+      document.execCommand(b.dataset.cmd, false, null);
+      document.getElementById("newsEditor").focus();
+    });
+  });
+  document.querySelectorAll(".news-tb-btn[data-size]").forEach(function(b){
+    b.addEventListener("click", function(e){
+      e.preventDefault();
+      document.execCommand("fontSize", false, b.dataset.size);
+      document.getElementById("newsEditor").focus();
+    });
+  });
+  document.querySelectorAll(".news-tb-btn[data-color]").forEach(function(b){
+    b.addEventListener("click", function(e){
+      e.preventDefault();
+      document.execCommand("foreColor", false, b.dataset.color);
+      document.getElementById("newsEditor").focus();
+    });
+  });
+  var addImg = document.getElementById("newsAddImg");
+  if(addImg) addImg.addEventListener("click", function(e){
+    e.preventDefault();
+    var url = prompt("Вставьте ссылку на картинку (URL) или оставьте пустым и загрузите с устройства:", "");
+    if(url && url.trim()){
+      document.execCommand("insertHTML", false, '<img src="'+url.trim()+'">');
+      return;
+    }
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = function(){
+      var f = input.files[0];
+      if(!f) return;
+      var r = new FileReader();
+      r.onload = function(ev){ document.execCommand("insertHTML", false, '<img src="'+ev.target.result+'">'); };
+      r.readAsDataURL(f);
+    };
+    input.click();
+  });
+}
+
+function bindNewsModal(){
+  var btnAdd = document.getElementById("btnAddNews");
+  if(btnAdd) btnAdd.onclick = function(){
+    document.getElementById("newsTitleInput").value = "";
+    document.getElementById("newsEditor").innerHTML = "";
+    document.getElementById("newsPin").value = "no";
+    document.getElementById("newsError").classList.remove("show");
+    document.getElementById("newsModal").classList.add("active");
+  };
+  var save = document.getElementById("newsSave");
+  if(save) save.onclick = function(){
+    var title = document.getElementById("newsTitleInput").value.trim();
+    var content = document.getElementById("newsEditor").innerHTML.trim();
+    var pinned = document.getElementById("newsPin").value === "yes";
+    var errEl = document.getElementById("newsError");
+    errEl.classList.remove("show");
+    if(!title){ errEl.textContent = "Введите заголовок"; errEl.classList.add("show"); return; }
+    if(!content){ errEl.textContent = "Введите текст"; errEl.classList.add("show"); return; }
+    var id = "N-" + String(news.length + 1).padStart(3,"0");
+    while(news.some(function(x){return x.id === id;})){ id = "N-" + String(Math.floor(Math.random()*10000)); }
+    news.unshift({
+      id:id, title:title, content:content,
+      authorId:currentUser.id, authorName:currentUser.name, authorRank:currentUser.rank,
+      authorAvatar:initials(currentUser.name),
+      date:new Date().toLocaleString("ru-RU"), pinned:pinned
+    });
+    logAction(currentUser.name+" опубликовал новость: "+title, "gold");
+    document.getElementById("newsModal").classList.remove("active");
+    buildNews();
+  };
+}
+
+/* ============ УК РФ ============ */
+function buildLaw(){
+  var tbody = document.getElementById("lawBody");
+  var chapterSelect = document.getElementById("lawChapter");
+  if(!tbody) return;
+  var chapters = [];
+  CRIMINAL_CODE.forEach(function(c){ if(chapters.indexOf(c.chapter) === -1) chapters.push(c.chapter); });
+  chapterSelect.innerHTML = '<option value="">Все главы</option>' + chapters.map(function(c){ return '<option value="'+esc(c)+'">'+esc(c)+'</option>'; }).join("");
+
+  function render(){
+    var q = document.getElementById("lawSearch").value.trim().toLowerCase();
+    var ch = chapterSelect.value;
+    tbody.innerHTML = "";
+    var lastChapter = "";
+    var shown = 0;
+    CRIMINAL_CODE.forEach(function(c){
+      if(ch && c.chapter !== ch) return;
+      if(q){
+        var hay = (c.art+" "+c.title+" "+c.punish).toLowerCase();
+        if(hay.indexOf(q) === -1) return;
+      }
+      if(c.chapter !== lastChapter){
+        lastChapter = c.chapter;
+        var gr = document.createElement("tr");
+        gr.className = "grp";
+        gr.innerHTML = '<td colspan="3">'+esc(c.chapter)+'</td>';
+        tbody.appendChild(gr);
+      }
+      var tr = document.createElement("tr");
+      tr.innerHTML = '<td class="art">'+esc(c.art)+'</td><td class="title">'+esc(c.title)+'</td><td class="punish">'+esc(c.punish)+'</td>';
+      tbody.appendChild(tr);
+      shown++;
+    });
+    if(!shown){
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:40px;color:var(--muted);">Ничего не найдено</td></tr>';
+    }
+  }
+  render();
+  document.getElementById("lawSearch").oninput = render;
+  chapterSelect.onchange = render;
+}
+
+/* ============ САЙДБАР / МОДАЛКИ / АДМИН ============ */
+var PAGE_META = {
+  home:{t:"Мой кабинет",s:"Сводка"}, news:{t:"Оповещения",s:"Новости и информация"},
+  calendar:{t:"Календарь",s:"Дежурства, инспекции, операции"}, checks:{t:"Инспекции",s:"Контрольные мероприятия"},
+  dossier:{t:"Личные дела",s:"Список сотрудников"}, premiums:{t:"Премирование",s:"Пул премий"},
+  leadership:{t:"Руководство",s:"Состав руководства"}, structure:{t:"Структура",s:"Штатная структура"},
+  law:{t:"УК РФ",s:"Уголовный кодекс Российской Федерации"},
+  requests:{t:"Заявки",s:"Заявки на службу"}, admin:{t:"Панель управления",s:"Управление"},
+  analytics:{t:"Аналитика",s:"Сводные показатели"}, contacts:{t:"Контакты",s:"Каналы связи"}
+};
+function bindSidebar(){
+  document.querySelectorAll(".sb-item").forEach(function(it){
+    it.addEventListener("click", function(){
+      var page = it.dataset.page;
+      document.querySelectorAll(".sb-item").forEach(function(x){ x.classList.toggle("active", x === it); });
+      document.querySelectorAll(".page").forEach(function(p){ p.classList.toggle("active", p.id === "page-"+page); });
+      if(PAGE_META[page]){
+        document.getElementById("pageTitle").textContent = PAGE_META[page].t;
+        document.getElementById("pageSub").textContent = PAGE_META[page].s;
+      }
+      document.getElementById("content").scrollTop = 0;
+    });
+  });
+}
+function bindTopbar(){
+  var btn = document.getElementById("tbNewsBtn");
+  if(btn) btn.addEventListener("click", function(){
+    document.querySelector('.sb-item[data-page="news"]').click();
+  });
+}
+function bindModals(){
+  document.querySelectorAll("[data-close]").forEach(function(b){
+    b.addEventListener("click", function(){ b.closest(".overlay").classList.remove("active"); });
+  });
+  document.querySelectorAll(".overlay").forEach(function(o){
+    o.addEventListener("click", function(e){ if(e.target === o) o.classList.remove("active"); });
+  });
+}
+function bindAdmin(){
+  document.querySelectorAll(".admin-tab").forEach(function(t){
+    t.addEventListener("click", function(){
+      var id = t.dataset.atab;
+      document.querySelectorAll(".admin-tab").forEach(function(x){ x.classList.toggle("active", x === t); });
+      document.querySelectorAll(".admin-panel").forEach(function(p){ p.classList.toggle("active", p.id === "atab-"+id); });
+    });
+  });
+}
+function bindContacts(){
+  document.querySelectorAll(".contact-card.link").forEach(function(c){
+    c.addEventListener("click", function(){ window.open(c.dataset.url, "_blank", "noopener"); });
+  });
+}
+
+function buildHomeFilters(){
+  var c = document.getElementById("homeFilters");
+  if(!c) return;
+  var total = Object.values(STAFF).filter(function(s){ return s.status !== "fired"; }).length;
+  var fired = Object.values(STAFF).filter(function(s){ return s.status === "fired"; }).length;
+  var pending = registerRequests.filter(function(r){ return r.status === "pending"; }).length;
+  var readIds = JSON.parse(localStorage.getItem("fsb_read_news") || "[]");
+  var unread = news.filter(function(n){ return readIds.indexOf(n.id) === -1; }).length;
+  c.innerHTML = '<div class="f-tile"><div class="f-num">'+total+'</div><div class="f-label">Сотрудников</div></div>' +
+    '<div class="f-tile"><div class="f-num" style="color:var(--red);">'+unread+'</div><div class="f-label">Новых оповещений</div></div>' +
+    '<div class="f-tile"><div class="f-num" style="color:var(--orange);">'+pending+'</div><div class="f-label">Заявок</div></div>' +
+    '<div class="f-tile"><div class="f-num" style="color:#f0a0a0;">'+fired+'</div><div class="f-label">Уволено</div></div>' +
+    '<div class="f-tile"><div class="f-num" style="color:var(--gold-2);">'+fmt(premiumPool.balance)+'</div><div class="f-label">Пул премий (₽)</div></div>';
+}
+function buildQuickAccess(){
+  var cont = document.getElementById("quickAccess");
+  cont.innerHTML = "";
+  var cards = [
+    {t:"Оповещения",d:"Новости и информация",page:"news"},
+    {t:"УК РФ",d:"Уголовный кодекс",page:"law"},
+    {t:"Личные дела",d:"Сотрудники и стаж",page:"dossier"},
+    {t:"Премирование",d:"Пул премий и выплаты",page:"premiums"},
+    {t:"Структура",d:"Штатная структура",page:"structure"},
+    {t:"Инспекции",d:"Контрольные мероприятия",page:"checks"}
+  ];
+  cards.forEach(function(c){
+    var el = document.createElement("div");
+    el.className = "person head-person";
+    el.style.cursor = "pointer";
+    el.innerHTML = '<div class="p-info"><div class="p-name" style="font-size:14.5px;">'+esc(c.t)+'</div><div class="p-post" style="font-size:12px;">'+esc(c.d)+'</div></div><div style="color:var(--gold);font-size:22px;align-self:center;">→</div>';
+    el.addEventListener("click", function(){ document.querySelector('.sb-item[data-page="'+c.page+'"]').click(); });
+    cont.appendChild(el);
+  });
+}
+
+/* ============ АВТО-ВХОД ============ */
+(async function(){
+  /* Сначала определяем, есть ли сервер */
+  await FSBApi.detect();
+  /* Если сервер есть — тянем актуальное состояние с него */
+  if(FSBApi.getMode() === 'server'){
+    var remote = await FSBApi.pull();
+    if(remote){
+      try {
+        if(remote.STAFF)            STAFF = remote.STAFF;
+        if(remote.registerRequests) registerRequests = remote.registerRequests;
+        if(remote.calEvents)        calEvents = remote.calEvents;
+        if(remote.systemLogs)       systemLogs = remote.systemLogs;
+        if(remote.premiumPool)      premiumPool = remote.premiumPool;
+        if(remote.inspections)      inspections = remote.inspections;
+        if(remote.news)             news = remote.news;
+      } catch(e){ console.error(e); }
+    }
+  }
+
+  /* Миграция паролей */
+  try { await migratePasswords(); } catch(e){ console.error('migrate:', e); }
+
+  /* Авто-вход */
+  var sess = JSON.parse(sessionStorage.getItem("fsb_session") || "null");
+  if(sess){
+    var acc = STAFF[sess.userId];
+    if(acc && acc.status !== "fired"){
+      var last = new Date(sess.loginAt).getTime();
+      if(Date.now() - last <= 24*3600000){
+        acc.lastSeen = new Date().toISOString();
+        currentUser = acc;
+        loginScreen.classList.add("hidden");
+        app.classList.add("active");
+        initApp();
+      }
+    }
+  }
+})();
+
+setInterval(function(){
+  if(currentUser){
+    currentUser.lastSeen = new Date().toISOString();
+    try { FSBStorage.save(serializeState()); FSBApi.schedulePush(serializeState()); } catch(e){}
+  }
+}, 60000);
+
+} catch(err){
+  var e = document.getElementById("boot-error");
+  var t = document.getElementById("boot-error-text");
+  if(e && t){ e.style.display = "block"; t.textContent = "Ошибка: " + err.message + "\n\n" + (err.stack || ""); }
+  console.error(err);
+}
+</script>
+</body>
+</html>

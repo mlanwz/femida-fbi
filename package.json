@@ -1,0 +1,15 @@
+{
+  "name": "fsb-kutuzovsky",
+  "version": "1.0.0",
+  "description": "РУ ФСБ Кутузовский ФО",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
